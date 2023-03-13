@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{% if category %}
+{{ category.name }}
+{% else %}
+Products
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="cont">
+    <div class="row">
+        <div class="column col-4 col-md-2">
+            <ul>
+                <li class="selected">
+                    <a href="{% url 'store:prod_list' %}">All</a>
+                </li>
+                {% for cat in categories %}
+                <li class="selected">
+                    <a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="product-list col-10 col-md-8">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-10"></div>
+                    {% for product in page_obj %}
+                    <div class="prod-con">
+                        <img src="{{ product.photo.url }}" width=130>
+                        <a href="{{ product.get_absolute_url }}"><br>{{ product.name }} </a>
+                        <a href="{{ product.get_absolute_url }}"><br>{{ product.price }} </a>
+                    </div>
+                    {% endfor %}
+                    <div class="col">
+                        4 of 4
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 col-md-2">
+            13
+        </div>
+    </div>
+</div>
+
+{% endblock %}

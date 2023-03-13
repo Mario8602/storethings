@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{% if category %}
+{{ category.name }}
+{% else %}
+Products
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container my-3">
+    <div class="row">
+
+        <div class="col-md-3 prod-con">
+            КАТАЛОГ
+            <ul>
+                <li class="selected">
+                    <a href="{% url 'store:prod_list' %}">All</a>
+                </li>
+                {% for cat in categories %}
+                <li class="selected">
+                    <a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="col-md-9">
+            <div class="pb-3 prod-con">
+                Товары. Etiam nec enim mauris. Etiam fringilla erat non ultrices elementum. Integer accumsan placerat
+                felis molestie porta. Fusce id rhoncus dui, nec maximus nisl. Etiam nec enim mauris. Etiam fringilla
+                erat non ultrices elementum. Integer accumsan placerat felis molestie porta. Fusce id rhoncus dui, nec
+                maximus nisl.
+            </div>
+            {% for product in page_obj %}
+            <div class="pb-3 prod-con">
+                <div class="row">
+                    <div class="col-2">
+                        <img class="displayed" src="{{ product.photo.url }}" href="{{ product.get_absolute_url }}"
+                             width="120">
+                    </div>
+                    <div class="col-10 cat-product-name">
+                        <div class="row">
+                            <div class="col-6">
+                                <a href="{{ product.get_absolute_url }}"><br>{{ product.name }}</a>
+                            </div>
+                            <div class="col-2">
+
+                            </div>
+                            <div class="col-2">
+                                <a href="{{ product.get_absolute_url }}"><br>{{ product.price }}</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 cat-amount">
+                                <a href="{{ product.get_absolute_url }}"><br>В наличии: {{ product.amount }}</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            {% endfor %}
+
+            <!--            <div class="row">-->
+            <!--                {% for product in page_obj %}-->
+            <!--                <div class="col-md-6 prod-con">{{ product.name }}</div>-->
+            <!--                {% endfor %}-->
+            <!--            </div>-->
+        </div>
+    </div>
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+    </div>
+</div>
+
+
+<!--<div class="container-sm my-2">-->
+<!--    <div class="row">-->
+<!--        <ul>-->
+<!--            {% for cat in categories %}-->
+<!--            <li class="selected">-->
+<!--                <a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>-->
+<!--            </li>-->
+<!--            {% endfor %}-->
+<!--        </ul>-->
+<!--        {% for contact in page_obj %}-->
+
+<!--        <div class="col-2">-->
+<!--        </div>-->
+<!--        <div class="col-10">-->
+<!--            <div class="prod-con">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-2">-->
+<!--                        <div class="cat-product-image">-->
+<!--                            <img class="displayed" src="{{ contact.photo.url }}" width="150px">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col">-->
+<!--                        <div class="cat-product-name">-->
+<!--                            {{ contact.name|upper }}-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    {% endfor %}-->
+<!--</div>-->
+
+
+{% endblock %}

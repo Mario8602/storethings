@@ -1,0 +1,45 @@
+from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
+
+from cart.forms import CartAddProductForm
+from .models import Category, Product
+
+
+def products_by_category(request, category_slug=None):
+
+    category = None
+    categories = Category.objects.all()
+    products = Product.objects.all()
+    pagination = Paginator(products, 6)
+
+    page_number = request.GET.get('page')
+    page_obj = pagination.get_page(page_number)
+
+    if category_slug:
+        category = get_object_or_404(Category, slug=category_slug)
+        products = products.filter(category=category)
+        pagination = Paginator(products, 6)
+
+        page_number = request.GET.get('page')
+        page_obj = pagination.get_page(page_number)
+
+    context = {
+        'category': category,
+        'categories': categories,
+        'products': products,
+        'page_obj': page_obj,
+    }
+
+    return render(request, 'main.html', context)
+
+
+def product_detail(request, id, slug):
+    one_product = get_object_or_404(Product, id=id, slug=slug)
+    cart_product_form = CartAddProductForm()
+
+    context = {
+        'product': one_product,
+        'cart_product_form': cart_product_form,
+    }
+
+    return render(request, 'detail.html', context)
