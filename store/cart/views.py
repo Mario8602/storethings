@@ -1,18 +1,18 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 
-from cart.models import OrderProd
+from .models import OrderProd, Order
 from product.models import Product
 
-from cart.cart_methods import Cart
-from cart.forms import CartAddProductForm, OrderAddForm
-from .tasks import send_task
+from .cart_methods import Cart
+from .forms import CartAddProductForm, OrderAddForm
+from .tasks import order_created
 
 
 """ функции для работы с корзиной: добавление, удаление """
-
 @require_POST
 def cart_add(request, product_id):
     cart = Cart(request)
@@ -37,20 +37,7 @@ def cart_detail(request):
 
 
 """ Создание заказа и его обработка """
-
-
-# def send(user_email, order_id):
-#     send_mail(
-#         'Вы подписались',
-#         f'Ваш заказ номер {order_id} оформлен',
-#         'Hellp8901@gmail.com',
-#         [user_email],
-#         fail_silently=False,
-#     )
-
-
 def test_order(request):
-
     cart = Cart(request)
     order_form = OrderAddForm()
     if request.method == 'POST':
@@ -63,7 +50,7 @@ def test_order(request):
                                          price=prod['price'],
                                          amount=prod['amount'])
             cart.clear()
-            send_task.delay(order.id)
+            order_created.delay(order.id, order.email, order.firstName)
             return render(request, 'orders/success_order.html', {'order': order})
 
     else:
@@ -77,4 +64,7 @@ def test_order(request):
     return render(request, 'orders/orders_create_form.html', context)
 
 
-
+@staff_member_required
+def order_detail_admin(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, 'orders/detail_for_admin.html', {'order': order})
