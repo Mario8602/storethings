@@ -25,3 +25,35 @@ services:
       - POSTGRES_DB=dbname
       - POSTGRES_USER=dbuser
       - POSTGRES_PASSWORD=pass
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ../2. Init Database:/docker-entrypoint-initdb.d
+      - .:/var/lib/postgresql/data
+
+  rabbit:
+    image: rabbitmq:3.11.0-alpine
+    hostname: rabbit
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=myuser
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - 15672:15672
+      - 5672:5672
+
+#  erlang:
+#    image: erlang:2
+#    hostname: erlang
+
+  worker:
+    build:
+      context: .
+    hostname: worker
+    entrypoint: celery
+    command: -A storething worker -l info #--loglevel=info
+    volumes:
+      - ./store:/store
+    links:
+      - rabbit
+    depends_on:
+      - rabbit

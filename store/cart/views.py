@@ -5,13 +5,13 @@ from django.views.decorators.http import require_POST
 
 from cart.models import OrderProd
 from product.models import Product
-from cart.tasks import order_created
 
 from cart.cart_methods import Cart
 from cart.forms import CartAddProductForm, OrderAddForm
+from .tasks import send_task
+
 
 """ функции для работы с корзиной: добавление, удаление """
-
 
 @require_POST
 def cart_add(request, product_id):
@@ -63,8 +63,7 @@ def test_order(request):
                                          price=prod['price'],
                                          amount=prod['amount'])
             cart.clear()
-            order_created.delay(5, 10)
-            # send('hellp8901@yandex.ru', order.id)
+            send_task.delay(order.id)
             return render(request, 'orders/success_order.html', {'order': order})
 
     else:
@@ -75,7 +74,7 @@ def test_order(request):
         'order_form': order_form,
     }
 
-    return render(request, 'orders/order_create_form.html', context)
+    return render(request, 'orders/orders_create_form.html', context)
 
 
 
