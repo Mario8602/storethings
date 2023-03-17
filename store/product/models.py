@@ -40,7 +40,7 @@ class Product(models.Model):
         return f'{self.name}'
 
     def trim20(self):
-        return u"%s..." % (self.body[:50],)
+        return u"%s..." % (self.body[:20],)
 
 
 class ProductDetails(models.Model):
