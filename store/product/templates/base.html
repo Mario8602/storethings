@@ -46,9 +46,21 @@
                     {% endif %}
                     {% endwith %}
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link active"> Войти </a>
+                    <a class="nav-link active" href="/"> <strong>{{ user.username|upper }}</strong> </a>
                 </li>
+                <li>
+                    <a class="nav-link active" href="{% url 'logout' %}"> Выйти </a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'login' %}"> Войти </a>
+                </li>
+                <li>
+                    <a class="nav-link active" href="{% url 'users:signup' %}"> Регистрация </a>
+                </li>
+                {% endif %}
             </ul>
 
         </div>

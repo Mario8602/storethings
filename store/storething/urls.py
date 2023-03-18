@@ -23,7 +23,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path(r'', include('product.urls', namespace='store')),
     path(r'cart/', include('cart.urls', namespace='cart')),
-    path(r'api/', include('product.api.urls', namespace='api'))
+    path(r'api/', include('product.api.urls', namespace='api')),
+    path(r'accounts/', include('user.urls', namespace='account')),
+    path(r'accounts/', include('django.contrib.auth.urls')),
 ]
 
 if settings.DEBUG:
