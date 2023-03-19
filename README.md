@@ -7,11 +7,17 @@
 *** 
 # Необходимо:
 
-- docker
-- docker-compose
+- [docker](https://docs.docker.com/get-docker/)
+- [docker-compose](https://docs.docker.com/compose/install/)
 
+# Настройка Docker
+
+```
 docker-compose build
+```
+```
 docker-compose up
+```
 
 # Контейнер docker
 
