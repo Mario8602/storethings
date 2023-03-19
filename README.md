@@ -5,12 +5,12 @@
    Интернет магазин 
 
 *** 
-# Необходимо:
+## Необходимо:
 
-- [docker](https://docs.docker.com/get-docker/)
-- [docker-compose](https://docs.docker.com/compose/install/)
+- [docker](https://docs.docker.com/get-docker/) `latest`
+- [docker-compose](https://docs.docker.com/compose/install/) `latest`
 
-# Настройка Docker
+## Настройка Docker
 
 ```
 docker-compose build
@@ -19,16 +19,16 @@ docker-compose build
 docker-compose up
 ```
 
-# Контейнер docker
+## Контейнер docker
 
 - django
 - database: PostgreSQL
 - celery
 - rabbitMQ
 
-# Реализованные функциональные точки
+## Реализованные функциональные точки
 
-- Категории товаров, информация о продукте
+- категории товаров, информация о продукте
 - система регистрации, авторизации(вход/выход)
 - проверка корзины товаров, добавление/удаление товаров корзины
 - покупка товаров с отправкой уведомлений по почте
