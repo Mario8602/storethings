@@ -29,6 +29,13 @@ body {
     background: #f5f5f5;
 }
 
+.prod-con-detail {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	border-radius: 20px;
+	margin-bottom: 15px;
+    background: #f5f5f5;
+}
+
 .column {
     text-align: left;
     float: left;

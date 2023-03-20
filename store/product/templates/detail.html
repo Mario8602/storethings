@@ -8,22 +8,30 @@ Products
 {% endif %}
 {% endblock %}
 {% block content %}
-
-<div class="product-detail">
-    {% if product.photo %}
-    <img src="{{ product.photo.url }}" width="130">
-    {% else %}
-    <img src="{% static 'no_photo.png' %}" width="130">
-    {% endif %}
-    <h1>{{ product.name }}</h1>
-    <h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
-    <p class="price">{{ product.price }}</p>
-    <form action="{% url 'cart:cart_add' product.id %}" method="post">
-    {{ cart_product_form }}
-    {% csrf_token %}
-    <input type="submit" value="Add to cart">
-    </form>
-    {{ product.description|linebreaks }}
+<div class="container my-3">
+    <div class="row">
+        <div class="product-detail">
+            <h2>{{ product.name }}</h2>
+        </div>
+        <div class="row prod-con-detail">
+            <div class="col-4 mt-3 mb-3">
+                {% if product.photo %}
+                <img src="{{ product.photo.url }}" width="360">
+                {% else %}
+                <img src="{% static 'no_photo.png' %}" width="130">
+                {% endif %}
+            </div>
+            <div class="col-8 mt-3 mb-3">
+                <h5><a href="{{ product.category.get_absolute_url }}">{{ product.body }}</a></h5>
+                <p class="price">{{ product.price }}</p>
+                <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                    {{ cart_product_form }}
+                    {% csrf_token %}
+                    <input type="submit" value="Add to cart">
+                </form>
+                {{ product.description|linebreaks }}
+            </div>
+        </div>
+    </div>
 </div>
-
 {% endblock %}

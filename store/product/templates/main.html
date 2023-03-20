@@ -55,7 +55,11 @@ Products
                         </div>
                         <div class="row">
                             <div class="col-6 cat-amount">
+                                {% if product.amount %}
                                 <a href="{{ product.get_absolute_url }}"><br>В наличии: {{ product.amount }}</a>
+                                {% else %}
+                                <a href="{{ product.get_absolute_url }}"><br>Нет в наличии.</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
