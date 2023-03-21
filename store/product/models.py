@@ -43,7 +43,61 @@ class Product(models.Model):
         return u"%s..." % (self.body[:20],)
 
 
-class ProductDetails(models.Model):
+class LaptopDetails(models.Model):
+
+    # CHOICE_OS = ['Windows 10 Home', 'Windows 10 PRO', 'Windows 11', 'Linux']
+    CHOICE_OS = (
+        ('HO', 'Windows 10 Home'),
+        ('PR', 'Windows 10 PRO'),
+        ('WI', 'Windows 11'),
+        ('LI', 'Linux'),
+    )
+
+    CHOICE_COLOR = (
+        ('BL', 'Black'),
+        ('WH', 'White'),
+        ('GR', 'Green'),
+        ('RE', 'Red'),
+        ('BL', 'Blue'),
+        ('RE', 'Red'),
+    )
+
     """ Дополнительная информация продуктов """
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='prodDetail')
-    uid = models.SmallIntegerField()
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='prodDetail_1')
+    # category = models.ForeignKey(Category, default='Электротехника', on_delete=models.SET_DEFAULT, related_name='category_productDetail_1')
+    # category = models.ForeignKey(Category, choices=Product.category, default='Электротехника', on_delete=models.SET_DEFAULT)
+    uid = models.SmallIntegerField(unique=True)
+    model = models.CharField(max_length=250)
+    color = models.CharField(max_length=40)
+    operating_system = models.CharField(max_length=2, choices=CHOICE_OS, default='HO',)
+
+    class Meta:
+        ordering = ('product', 'uid')
+
+    def __str__(self):
+        return self.model
+
+
+class MonitorDetails(models.Model):
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='prodDetail_2')
+    category = models.ForeignKey(Category, default='Электротехника', on_delete=models.SET_DEFAULT, related_name='category_productDetail_2')
+    uid = models.SmallIntegerField(unique=True)
+    model = models.CharField(max_length=250)
+    color = models.CharField(max_length=40)
+    diagonal = models.FloatField()
+    resolution = models.CharField(max_length=20)
+    brightness = models.IntegerField()
+    frequency = models.IntegerField()
+    connector_VGA = models.BooleanField()
+    connector_HDMI = models.BooleanField()
+    width = models.FloatField()
+    height = models.FloatField()
+    weight = models.FloatField()
+
+    def __str__(self):
+        return self.model
+
+    def get_absolute_url(self):
+        return reverse('store:product_detail', args=[self.pk])
+

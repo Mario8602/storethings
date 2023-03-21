@@ -18,18 +18,32 @@ Products
                 {% if product.photo %}
                 <img src="{{ product.photo.url }}" width="360">
                 {% else %}
-                <img src="{% static 'no_photo.png' %}" width="130">
+                <img src="{% static 'no_photo.png' %}" width="360">
                 {% endif %}
             </div>
             <div class="col-8 mt-3 mb-3">
-                <h5><a href="{{ product.category.get_absolute_url }}">{{ product.body }}</a></h5>
-                <p class="price">{{ product.price }}</p>
-                <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                <h5><a href="{{ product.category.get_absolute_url }}">{{ product.name }}</a></h5>
+                <p class="price">Цена: {{ product.price }}</p>
+                <form class="price" action="{% url 'cart:cart_add' product.id %}" method="post">
                     {{ cart_product_form }}
                     {% csrf_token %}
                     <input type="submit" value="Add to cart">
                 </form>
-                {{ product.description|linebreaks }}
+                {{ product.body|linebreaks }}
+                {% if product.category.slug == "monitor" %}
+                <div>
+                    {% for detail_info in monitor %}
+                    {{ detail_info.as_p }}
+                    <a>Уникальный номер: {{ detail_info.uid }}</a>
+                    <br><a>Модель: {{ detail_info.model }}</a>
+                    <br><a>Цвет: {{ detail_info.color }}</a>
+                    {% endfor %}
+                </div>
+                {% elif product.category.slug == "noutbuk" %}
+                <div>
+                    {{ product.category.slug }}
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
