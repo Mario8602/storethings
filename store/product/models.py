@@ -45,31 +45,56 @@ class Product(models.Model):
 
 class LaptopDetails(models.Model):
 
-    # CHOICE_OS = ['Windows 10 Home', 'Windows 10 PRO', 'Windows 11', 'Linux']
-    CHOICE_OS = (
-        ('HO', 'Windows 10 Home'),
-        ('PR', 'Windows 10 PRO'),
-        ('WI', 'Windows 11'),
-        ('LI', 'Linux'),
-    )
+    CHOICE_OS = [
+        ('Windows 10 Home', 'Windows 10 home'),
+        ('Windows 10 PRO', 'Windows 10 PRO'),
+        ('Windows 11 home', 'Windows 11 home'),
+        ('Windows 11 pro', 'Windows 11 pro'),
+        ('Linux', 'Linux'),
+        ('Mac OS', 'Mac OS'),
+        ('Without OS', 'Without OS'),
+    ]
 
     CHOICE_COLOR = (
-        ('BL', 'Black'),
-        ('WH', 'White'),
-        ('GR', 'Green'),
-        ('RE', 'Red'),
-        ('BL', 'Blue'),
-        ('RE', 'Red'),
+        ('Black', 'Black'),
+        ('White', 'White'),
+        ('Green', 'Green'),
+        ('Red', 'Red'),
+        ('Blue', 'Blue'),
+        ('Yellow', 'Yellow'),
+    )
+
+    CHOICE_SCREEN_TYPE = (
+        ('No info', 'No info'),
+        ('IPS', 'IPS'),
+        ('IGZO', 'IGZO'),
+        ('VA', 'VA'),
+        ('TN+Film', 'TN+Film'),
+        ('OLED', 'OLED'),
+        ('other', 'other')
+    )
+
+    CHOICE_FREQUENCY = (
+        ('No info', 'no information'),
+        ('60', '60 ГЦ'),
+        ('144', '144 ГЦ'),
+        ('160', '160 ГЦ'),
+        ('240', '240 ГЦ'),
+        ('360', '360 ГЦ'),
     )
 
     """ Дополнительная информация продуктов """
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='prodDetail_1')
-    # category = models.ForeignKey(Category, default='Электротехника', on_delete=models.SET_DEFAULT, related_name='category_productDetail_1')
-    # category = models.ForeignKey(Category, choices=Product.category, default='Электротехника', on_delete=models.SET_DEFAULT)
     uid = models.SmallIntegerField(unique=True)
-    model = models.CharField(max_length=250)
-    color = models.CharField(max_length=40)
-    operating_system = models.CharField(max_length=2, choices=CHOICE_OS, default='HO',)
+    model = models.CharField(max_length=250, null=True, blank=True)
+    color = models.CharField(max_length=40, null=True, blank=True)
+    operating_system = models.CharField(max_length=50, choices=CHOICE_OS, default='No info',)
+    screen_type = models.CharField(max_length=50, choices=CHOICE_SCREEN_TYPE, default='0',)
+    screen_resolution = models.CharField(max_length=20, null=True, blank=True)
+    frequency = models.CharField(max_length=50, choices=CHOICE_FREQUENCY, default=0,)
+    width = models.FloatField(null=True, blank=True)
+    depth = models.FloatField(null=True, blank=True)
+    weight = models.FloatField(null=True, blank=True)
 
     class Meta:
         ordering = ('product', 'uid')
@@ -80,20 +105,29 @@ class LaptopDetails(models.Model):
 
 class MonitorDetails(models.Model):
 
+    CHOICE_FREQUENCY = [
+        ('No info', 'no information'),
+        ('60', '60 ГЦ'),
+        ('144', '144 ГЦ'),
+        ('160', '160 ГЦ'),
+        ('240', '240 ГЦ'),
+        ('360', '360 ГЦ'),
+    ]
+
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='prodDetail_2')
     category = models.ForeignKey(Category, default='Электротехника', on_delete=models.SET_DEFAULT, related_name='category_productDetail_2')
     uid = models.SmallIntegerField(unique=True)
-    model = models.CharField(max_length=250)
-    color = models.CharField(max_length=40)
-    diagonal = models.FloatField()
-    resolution = models.CharField(max_length=20)
-    brightness = models.IntegerField()
-    frequency = models.IntegerField()
+    model = models.CharField(max_length=250, null=True, blank=True)
+    color = models.CharField(max_length=40, null=True, blank=True)
+    diagonal = models.FloatField(null=True, blank=True)
+    resolution = models.CharField(max_length=20, null=True, blank=True)
+    brightness = models.IntegerField(null=True, blank=True)
+    frequency = models.CharField(max_length=50, choices=CHOICE_FREQUENCY, default=0)
     connector_VGA = models.BooleanField()
     connector_HDMI = models.BooleanField()
-    width = models.FloatField()
-    height = models.FloatField()
-    weight = models.FloatField()
+    width = models.FloatField(null=True, blank=True)
+    height = models.FloatField(null=True, blank=True)
+    weight = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.model

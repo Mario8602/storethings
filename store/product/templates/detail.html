@@ -31,17 +31,76 @@ Products
                 </form>
                 {{ product.body|linebreaks }}
                 {% if product.category.slug == "monitor" %}
-                <div>
+                <div class="grid-container">
                     {% for detail_info in monitor %}
-                    {{ detail_info.as_p }}
-                    <a>Уникальный номер: {{ detail_info.uid }}</a>
-                    <br><a>Модель: {{ detail_info.model }}</a>
-                    <br><a>Цвет: {{ detail_info.color }}</a>
+                    <div class="grid-item">Уникальный номер:</div>
+                    <div class="grid-item">{{ detail_info.uid }}</div>
+                    <div class="grid-item"><h6>Общие параметры</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Модель:</div>
+                    <div class="grid-item">{{ detail_info.model }}</div>
+                    <div class="grid-item">Цвет:</div>
+                    <div class="grid-item">{{ detail_info.color }}</div>
+                    <div class="grid-item"><h6>Экран</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Диагональ:</div>
+                    <div class="grid-item">{{ detail_info.diagonal }}"</div>
+                    <div class="grid-item">Разрешение:</div>
+                    <div class="grid-item">{{ detail_info.resolution }}</div>
+                    <div class="grid-item"><h6>Технические характеристики экрана</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Яркость:</div>
+                    <div class="grid-item">{{ detail_info.brightness }} Кд/м²</div>
+                    <div class="grid-item">Частота:</div>
+                    <div class="grid-item">{{ detail_info.frequency }} Гц</div>
+                    <div class="grid-item"><h6>Интерфейсы</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Разъём VGA:</div>
+                    <div class="grid-item">{{ detail_info.connector_VGA }}</div>
+                    <div class="grid-item">Разъём HDMI:</div>
+                    <div class="grid-item">{{ detail_info.connector_HDMI }}</div>
+                    <div class="grid-item"><h6>Габариты</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Ширина:</div>
+                    <div class="grid-item">{{ detail_info.width }} мм</div>
+                    <div class="grid-item">Высота:</div>
+                    <div class="grid-item">{{ detail_info.height }} мм</div>
+                    <div class="grid-item">Вес:</div>
+                    <div class="grid-item">{{ detail_info.weight }} кг</div>
                     {% endfor %}
                 </div>
                 {% elif product.category.slug == "noutbuk" %}
-                <div>
-                    {{ product.category.slug }}
+                <div class="grid-container">
+                    {% for detail_info in laptop %}
+                    <div class="grid-item">Уникальный номер:</div>
+                    <div class="grid-item">{{ detail_info.uid }}</div>
+                    <div class="grid-item"><h6>Общие параметры</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Модель:</div>
+                    <div class="grid-item">{{ detail_info.model }}</div>
+                    <div class="grid-item">Цвет:</div>
+                    <div class="grid-item">{{ detail_info.color }}</div>
+                    <div class="grid-item">Операционная система:</div>
+                    <div class="grid-item">{{ detail_info.operating_system }}</div>
+                    <div class="grid-item"><h6>Экран</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Тип экрана:</div>
+                    <div class="grid-item">{{ detail_info.screen_type }}</div>
+                    <div class="grid-item">Разрешение:</div>
+                    <div class="grid-item">{{ detail_info.screen_resolution }}</div>
+                    <div class="grid-item"><h6>Технические характеристики экрана</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Частота:</div>
+                    <div class="grid-item">{{ detail_info.frequency }} Гц</div>
+                    <div class="grid-item"><h6>Габариты</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Ширина:</div>
+                    <div class="grid-item">{{ detail_info.width }} мм</div>
+                    <div class="grid-item">Глубина:</div>
+                    <div class="grid-item">{{ detail_info.depth }} мм</div>
+                    <div class="grid-item">Вес:</div>
+                    <div class="grid-item">{{ detail_info.weight }} кг</div>
+                    {% endfor %}
                 </div>
                 {% endif %}
             </div>

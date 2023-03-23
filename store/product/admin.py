@@ -11,7 +11,9 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'slug', 'photo', Product.trim20, 'created_at', 'updated_at', 'price', 'amount', 'private']
     list_filter = ['created_at', 'updated_at', 'price', 'private']
     list_editable = ['price', 'amount', 'private']
+    list_display_links = ['name', 'slug']
     prepopulated_fields = {'slug': ('name',)}
+    search_fields = ['name']
 
 
 class LaptopDetailsAdmin(admin.ModelAdmin):
@@ -22,6 +24,7 @@ class LaptopDetailsAdmin(admin.ModelAdmin):
 class MonitorDetailsAdmin(admin.ModelAdmin):
     list_display = ['product', 'category', 'uid', 'model', 'color', 'frequency']
     list_filter = ['product', 'model', 'frequency']
+    raw_id_fields = ['product', ]
 
 
 admin.site.register(Category, CategoryAdmin)

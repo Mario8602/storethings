@@ -34,20 +34,21 @@ def products_by_category(request, category_slug=None):
 
 
 def product_detail(request, id, slug):
-    monitors = MonitorDetails.objects.all()
-    # monitor = get_object_or_404(MonitorDetails)
 
     one_product = get_object_or_404(Product, id=id, slug=slug)
     cart_product_form = CartAddProductForm()
-    # category = get_object_or_404(Category, slug=category_slug)
 
+    monitors = MonitorDetails.objects.all()
     monitor = monitors.filter(product=one_product)
+
+    laptop = LaptopDetails.objects.all()
+    laptop = laptop.filter(product=one_product)
 
     context = {
         'product': one_product,
         'cart_product_form': cart_product_form,
-        # 'category': category,
         'monitor': monitor,
+        'laptop': laptop,
     }
 
     return render(request, 'detail.html', context)

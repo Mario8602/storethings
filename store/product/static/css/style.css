@@ -78,3 +78,22 @@ img.displayed {
 .price {
     text-align: right;
 }
+
+.detail-info {
+    text-align: justify;
+}
+
+
+.grid-container {
+
+    display: grid;
+    grid-template-columns: 25em 20em;
+}
+
+.grid-item {
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 1.0em;
+    padding: 0.3em;
+    color: black;
+}
