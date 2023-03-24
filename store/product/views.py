@@ -45,9 +45,6 @@ def products_by_category(request, category_slug=None):
             page_number = request.GET.get('page')
             page_obj = pagination.get_page(page_number)
 
-        # page_number = request.GET.get('page')
-        # page_obj = pagination.get_page(page_number)
-
     context = {
         'category_now': category_now,
         'filter_mon': filter_product_mon,
