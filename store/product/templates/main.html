@@ -12,21 +12,43 @@ Products
 {% block content %}
 <div class="container my-3">
     <div class="row">
+        <div class="col-md-3">
+            <div class="prod-con">
+                КАТАЛОГ
+                <ul>
+                    <li class="selected">
+                        <a href="{% url 'store:prod_list' %}">All</a>
+                    </li>
+                    {% for cat in categories %}
+                    <li class="selected">
+                        <a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>
+                    </li>
+                    {% endfor %}
+                    <!--                    {% for i in filter_mon.qs %}-->
+                    <!--                    {{ i.product.category.slug }}-->
+                    <!--                    {% endfor %}-->
+                    <!--                    {{ filter_mon.qs.product }}-->
 
-        <div class="col-md-3 prod-con">
-            КАТАЛОГ
-            <ul>
-                <li class="selected">
-                    <a href="{% url 'store:prod_list' %}">All</a>
-                </li>
-                {% for cat in categories %}
-                <li class="selected">
-                    <a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>
-                </li>
+
+                </ul>
+            </div>
+
+            {% if category_slug %}
+            <div class="prod-con">
+                ФИЛЬТР
+                <form method="get">
+                    {{ filter.form.as_p }}
+                    <input type="submit"/>
+                </form>
+                {% for obj in filter.qs %}
+                {{ obj.model }} - ${{ obj.product }}<br/>
                 {% endfor %}
-            </ul>
-        </div>
+            </div>
+            {% else %}
+            PROR
+            {% endif %}
 
+        </div>
         <div class="col-md-9">
             <div class="pb-3 prod-con">
                 Товары. Etiam nec enim mauris. Etiam fringilla erat non ultrices elementum. Integer accumsan placerat
@@ -34,6 +56,41 @@ Products
                 erat non ultrices elementum. Integer accumsan placerat felis molestie porta. Fusce id rhoncus dui, nec
                 maximus nisl.
             </div>
+            {% if category_now == 'monitor' %}
+            {% for product in page_obj %}
+            <div class="pb-3 prod-con">
+                <div class="row">
+                    <div class="col-2">
+                        <img class="displayed" src="{{ product.product.photo.url }}"
+                             href="{{ product.product.get_absolute_url }}"
+                             width="120">
+                    </div>
+                    <div class="col-10 cat-product-name">
+                        <div class="row">
+                            <div class="col-6">
+                                <a href="{{ product.product.get_absolute_url }}"><br>{{ product.model }}</a>
+                            </div>
+                            <div class="col-2">
+
+                            </div>
+                            <div class="col-2">
+                                <a href="{{ MonitorDetails.get_absolute_url }}"><br>{{ product.product.price }}</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 cat-amount">
+                                {% if product.product.amount %}
+                                <a href="{{ MonitorDetails.get_absolute_url }}"><br>В наличии: {{ product.product.amount }}</a>
+                                {% else %}
+                                <a href="{{ MonitorDetails.get_absolute_url }}"><br>Нет в наличии.</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
             {% for product in page_obj %}
             <div class="pb-3 prod-con">
                 <div class="row">
@@ -63,11 +120,10 @@ Products
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
             {% endfor %}
+            {% endif %}
 
             <!--            <div class="row">-->
             <!--                {% for product in page_obj %}-->
@@ -94,40 +150,5 @@ Products
     </span>
     </div>
 </div>
-
-
-<!--<div class="container-sm my-2">-->
-<!--    <div class="row">-->
-<!--        <ul>-->
-<!--            {% for cat in categories %}-->
-<!--            <li class="selected">-->
-<!--                <a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>-->
-<!--            </li>-->
-<!--            {% endfor %}-->
-<!--        </ul>-->
-<!--        {% for contact in page_obj %}-->
-
-<!--        <div class="col-2">-->
-<!--        </div>-->
-<!--        <div class="col-10">-->
-<!--            <div class="prod-con">-->
-<!--                <div class="row">-->
-<!--                    <div class="col-2">-->
-<!--                        <div class="cat-product-image">-->
-<!--                            <img class="displayed" src="{{ contact.photo.url }}" width="150px">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="col">-->
-<!--                        <div class="cat-product-name">-->
-<!--                            {{ contact.name|upper }}-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    {% endfor %}-->
-<!--</div>-->
-
 
 {% endblock %}

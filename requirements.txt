@@ -4,3 +4,4 @@ psycopg2-binary==2.9.5
 celery==5.2.7
 pillow==9.4.0
 django-phonenumber-field[phonenumberslite]==7.0.2 # dpf[pnl]: 7.0.2 [8.13.7]
+django-filter==22.1
