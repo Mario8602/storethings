@@ -2,3 +2,4 @@
 store/media
 passwords.py
 pgdata
+store/config
