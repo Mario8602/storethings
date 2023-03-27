@@ -11,9 +11,6 @@ def products_by_category(request, category_slug=None):
     category = None
     categories = Category.objects.all()
     products = Product.objects.all().order_by('?')
-    # pagination = Paginator(products, 6)
-
-    # filter_product_mon = MonitorFilter(request.GET, queryset=MonitorDetails.objects.all())
 
     filter_product = ProductFilter(request.GET, queryset=Product.objects.all())
     pagination = Paginator(filter_product.qs, 4)
