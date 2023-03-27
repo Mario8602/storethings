@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, LaptopDetails, MonitorDetails
+from .models import Category, Product, LaptopDetails, MonitorDetails, KeyboardDetails, VideoCardDetails
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -27,7 +27,21 @@ class MonitorDetailsAdmin(admin.ModelAdmin):
     raw_id_fields = ['product', ]
 
 
+class KeyboardDetailsAdmin(admin.ModelAdmin):
+    list_display = ['product', 'model', 'color']
+    list_filter = ['product', 'model', 'color']
+    raw_id_fields = ['product', ]
+
+
+class VideoCardDetailsAdmin(admin.ModelAdmin):
+    list_display = ['product', 'model', 'color']
+    list_filter = ['product', 'model', 'color']
+    raw_id_fields = ['product', ]
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(LaptopDetails, LaptopDetailsAdmin)
 admin.site.register(MonitorDetails, MonitorDetailsAdmin)
+admin.site.register(KeyboardDetails, KeyboardDetailsAdmin)
+admin.site.register(VideoCardDetails, VideoCardDetailsAdmin)

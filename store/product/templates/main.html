@@ -24,30 +24,17 @@ Products
                         <a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>
                     </li>
                     {% endfor %}
-                    <!--                    {% for i in filter_mon.qs %}-->
-                    <!--                    {{ i.product.category.slug }}-->
-                    <!--                    {% endfor %}-->
-                    <!--                    {{ filter_mon.qs.product }}-->
-
-
                 </ul>
             </div>
-
-            {% if category_now == 'monitor' %}
+            {% if category.slug %}
             <div class="prod-con">
                 ФИЛЬТР
                 <form method="get">
                     {{ filter.form.as_p }}
                     <input type="submit"/>
                 </form>
-                {% for obj in filter.qs %}
-                {{ obj.model }} - ${{ obj.product }}<br/>
-                {% endfor %}
             </div>
-            {% else %}
-            PROR
             {% endif %}
-
         </div>
         <div class="col-md-9">
             <div class="pb-3 prod-con">
@@ -56,7 +43,7 @@ Products
                 erat non ultrices elementum. Integer accumsan placerat felis molestie porta. Fusce id rhoncus dui, nec
                 maximus nisl.
             </div>
-            {% if category_now == 'monitor' %}
+            {% if category.slug %}
             {% for product in page_obj %}
             <div class="pb-3 prod-con">
                 <div class="row">

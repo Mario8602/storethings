@@ -69,7 +69,9 @@ Products
                     <div class="grid-item">{{ detail_info.weight }} кг</div>
                     {% endfor %}
                 </div>
+
                 {% elif product.category.slug == "noutbuk" %}
+
                 <div class="grid-container">
                     {% for detail_info in laptop %}
                     <div class="grid-item">Уникальный номер:</div>
@@ -102,6 +104,48 @@ Products
                     <div class="grid-item">{{ detail_info.weight }} кг</div>
                     {% endfor %}
                 </div>
+
+                {% elif product.category.slug == "klaviatura" %}
+
+                <div class="grid-container">
+                    {% for detail_info in keyboard %}
+                    <div class="grid-item">Уникальный номер:</div>
+                    <div class="grid-item">{{ detail_info.uid }}</div>
+                    <div class="grid-item"><h6>Классификация</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Модель:</div>
+                    <div class="grid-item">{{ detail_info.model }}</div>
+                    <div class="grid-item">Тип клавиатуры:</div>
+                    <div class="grid-item">{{ detail_info.keyboard_type }}</div>
+                    <div class="grid-item"><h6>Внешний вид</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Цвет:</div>
+                    <div class="grid-item">{{ detail_info.color }}</div>
+                    <div class="grid-item">Подсветка клавиш:</div>
+                    <div class="grid-item">{{ detail_info.key_backlight }}</div>
+                    <div class="grid-item"><h6>Клавиши</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Материал кейкапов:</div>
+                    <div class="grid-item">{{ detail_info.keycap_material }}</div>
+                    <div class="grid-item">Количество клавиш:</div>
+                    <div class="grid-item">{{ detail_info.total_number_of_keys }} шт.</div>
+                    <div class="grid-item"><h6>Функциональность</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Клавиша функции:</div>
+                    <div class="grid-item">{{ detail_info.function_key }}</div>
+                    <div class="grid-item">Программируемые клавиши:</div>
+                    <div class="grid-item">{{ detail_info.programmable_keys }}</div>
+                    <div class="grid-item"><h6>Конструкция</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Материал корпуса:</div>
+                    <div class="grid-item">{{ detail_info.case_material }}</div>
+                    <div class="grid-item">Защита от воды:</div>
+                    <div class="grid-item">{{ detail_info.water_protection }}</div>
+                    <div class="grid-item">Интерфейс подключения:</div>
+                    <div class="grid-item">{{ detail_info.connection }}</div>
+                    {% endfor %}
+                </div>
+
                 {% endif %}
             </div>
         </div>

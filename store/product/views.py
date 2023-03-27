@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 
-from .filters import ProductFilter, MonitorFilter
+from .filters import ProductFilter, MonitorFilter, LaptopFilter, KeyboardFilter, VideoCartFilter
 from cart.forms import CartAddProductForm
-from .models import Category, Product, MonitorDetails, LaptopDetails
+from .models import Category, Product, MonitorDetails, LaptopDetails, KeyboardDetails, VideoCardDetails
 
 
 def products_by_category(request, category_slug=None):
@@ -13,41 +13,45 @@ def products_by_category(request, category_slug=None):
     products = Product.objects.all().order_by('?')
     # pagination = Paginator(products, 6)
 
-    filter_product_mon = MonitorFilter(request.GET, queryset=MonitorDetails.objects.all())
+    # filter_product_mon = MonitorFilter(request.GET, queryset=MonitorDetails.objects.all())
 
     filter_product = ProductFilter(request.GET, queryset=Product.objects.all())
     pagination = Paginator(filter_product.qs, 4)
 
     page_number = request.GET.get('page')
     page_obj = pagination.get_page(page_number)
-    category_now = None
 
     if category_slug:
         if category_slug == "monitor":
-            category_now = category_slug
             category = get_object_or_404(Category, slug=category_slug)
             products = products.filter(category=category)
-            filter_product_mon = MonitorFilter(request.GET, queryset=MonitorDetails.objects.all())
-            pagination = Paginator(filter_product_mon.qs, 4)
-
-            page_number = request.GET.get('page')
-            page_obj = pagination.get_page(page_number)
+            filter_product = MonitorFilter(request.GET, queryset=MonitorDetails.objects.all())
+            pagination = Paginator(filter_product.qs, 5)
+        elif category_slug == 'noutbuk':
+            category = get_object_or_404(Category, slug=category_slug)
+            products = products.filter(category=category)
+            filter_product = LaptopFilter(request.GET, queryset=LaptopDetails.objects.all())
+            pagination = Paginator(filter_product.qs, 4)
+        elif category_slug == 'klaviatura':
+            category = get_object_or_404(Category, slug=category_slug)
+            products = products.filter(category=category)
+            filter_product = KeyboardFilter(request.GET, queryset=KeyboardDetails.objects.all())
+            pagination = Paginator(filter_product.qs, 4)
+        elif category_slug == 'videokarta':
+            category = get_object_or_404(Category, slug=category_slug)
+            products = products.filter(category=category)
+            filter_product = VideoCartFilter(request.GET, queryset=VideoCardDetails.objects.all())
+            pagination = Paginator(filter_product.qs, 4)
         else:
-            category_now = category_slug
             category = get_object_or_404(Category, slug=category_slug)
             products = products.filter(category=category)
             filter_product = ProductFilter(request.GET, queryset=Product.objects.filter(category=category))
-            # filter_product_monitor = ProductFilter(request.GET, queryset=)
-            # filter_product = filter_product.qs.filter(category=category)
-            # pagination = Paginator(products, 3)
             pagination = Paginator(filter_product.qs, 4)
 
-            page_number = request.GET.get('page')
-            page_obj = pagination.get_page(page_number)
+        page_number = request.GET.get('page')
+        page_obj = pagination.get_page(page_number)
 
     context = {
-        'category_now': category_now,
-        'filter_mon': filter_product_mon,
         'filter': filter_product,
         'category': category,
         'categories': categories,
@@ -69,11 +73,15 @@ def product_detail(request, id, slug):
     laptop = LaptopDetails.objects.all()
     laptop = laptop.filter(product=one_product)
 
+    keyboard = KeyboardDetails.objects.all()
+    keyboard = keyboard.filter(product=one_product)
+
     context = {
         'product': one_product,
         'cart_product_form': cart_product_form,
         'monitor': monitor,
         'laptop': laptop,
+        'keyboard': keyboard,
     }
 
     return render(request, 'detail.html', context)
