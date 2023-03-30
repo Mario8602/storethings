@@ -146,6 +146,55 @@ Products
                     {% endfor %}
                 </div>
 
+                {% elif product.category.slug == "videokarta" %}
+
+                <div class="grid-container">
+                    {% for detail_info in videokarta %}
+                    <div class="grid-item">Уникальный номер:</div>
+                    <div class="grid-item">{{ detail_info.uid }}</div>
+                    <div class="grid-item"><h6>Общие параметры</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Модель:</div>
+                    <div class="grid-item">{{ detail_info.model }}</div>
+                    <div class="grid-item">Цвет:</div>
+                    <div class="grid-item">{{ detail_info.color }}</div>
+                    <div class="grid-item"><h6>Основные параметры</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Графический процессор:</div>
+                    <div class="grid-item">{{ detail_info.gpu }}</div>
+                    <div class="grid-item">Микроархитектура:</div>
+                    <div class="grid-item">{{ detail_info.microarchitecture }}</div>
+                    <div class="grid-item"><h6>Спецификация видеопамяти</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Размер видеопамяти:</div>
+                    <div class="grid-item">{{ detail_info.videomemory_size }}</div>
+                    <div class="grid-item">Тип памяти:</div>
+                    <div class="grid-item">{{ detail_info.memory_type }}</div>
+                    <div class="grid-item"><h6>Спецификация видеопроцессора</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Штатная частота работы видеочипа:</div>
+                    <div class="grid-item">{{ detail_info.frequency_videochip }}</div>
+                    <div class="grid-item">Поддержка трассировки лучей:</div>
+                    <div class="grid-item">{{ detail_info.ray_tracing_support }}</div>
+                    <div class="grid-item">Число текстурных блоков:</div>
+                    <div class="grid-item">{{ detail_info.number_texture_units }}</div>
+                    <div class="grid-item"><h6>Вывод изображения</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">видеоразъём displayport:</div>
+                    <div class="grid-item">{{ detail_info.video_connectors_displayport }}</div>
+                    <div class="grid-item">видеоразъём hdmi:</div>
+                    <div class="grid-item">{{ detail_info.video_connectors_hdmi }}</div>
+                    <div class="grid-item"><h6>Габариты и вес</h6></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item">Длина:</div>
+                    <div class="grid-item">{{ detail_info.length }} мм</div>
+                    <div class="grid-item">Ширина:</div>
+                    <div class="grid-item">{{ detail_info.width }} мм</div>
+                    <div class="grid-item">Вес:</div>
+                    <div class="grid-item">{{ detail_info.weight }} г</div>
+                    {% endfor %}
+                </div>
+
                 {% endif %}
             </div>
         </div>

@@ -3,22 +3,28 @@
 {% block title %}Оформление заказа{% endblock %}
 
 {% block content %}
-<h1>Checkout</h1>
-<div class="">
-    <h3>Your order</h3>
-    <ul>
-        {% for item in cart %}
-        <li>
-            {{ item.amount }}x {{ item.product.name }}
-            <span>${{ item.total_price }}</span>
-        </li>
-        {% endfor %}
-    </ul>
-    <p>Общая стоимость: {{ cart.get_total_price }}</p>
+
+<div class="container my-3">
+    <h1>Checkout</h1>
+    <div class="prod-con txt-re">
+        <h3>Your order</h3>
+        {{ roll }}
+        <ul>
+            {% for item in cart %}
+            <li>
+                {{ item.amount }}x {{ item.product.name }}
+                <span>${{ item.total_price }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        <p>Общая стоимость: {{ cart.get_total_price }}</p>
+
+        <form action="." method="post" class="order-form">
+            {{ order_form.as_p }}
+            <p><input type="submit" value="Оплатить"></p>
+            {% csrf_token %}
+        </form>
+    </div>
 </div>
-<form action="." method="post" class="order-form">
-    {{ order_form.as_p }}
-    <p><input type="submit" value="Оплатить"></p>
-    {% csrf_token %}
-</form>
+
 {% endblock %}

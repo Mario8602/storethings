@@ -12,36 +12,30 @@ def products_by_category(request, category_slug=None):
     categories = Category.objects.all()
     products = Product.objects.all().order_by('?')
 
-    filter_product = ProductFilter(request.GET, queryset=Product.objects.all())
-    pagination = Paginator(filter_product.qs, 4)
+    filter_product = ProductFilter(request.GET, queryset=Product.objects.all().order_by('?'))
+    pagination = Paginator(filter_product.qs, 8)
 
     page_number = request.GET.get('page')
     page_obj = pagination.get_page(page_number)
 
     if category_slug:
+
+        category = get_object_or_404(Category, slug=category_slug)
+        products = products.filter(category=category)
+
         if category_slug == "monitor":
-            category = get_object_or_404(Category, slug=category_slug)
-            products = products.filter(category=category)
             filter_product = MonitorFilter(request.GET, queryset=MonitorDetails.objects.all())
             pagination = Paginator(filter_product.qs, 5)
         elif category_slug == 'noutbuk':
-            category = get_object_or_404(Category, slug=category_slug)
-            products = products.filter(category=category)
             filter_product = LaptopFilter(request.GET, queryset=LaptopDetails.objects.all())
             pagination = Paginator(filter_product.qs, 4)
         elif category_slug == 'klaviatura':
-            category = get_object_or_404(Category, slug=category_slug)
-            products = products.filter(category=category)
             filter_product = KeyboardFilter(request.GET, queryset=KeyboardDetails.objects.all())
             pagination = Paginator(filter_product.qs, 4)
         elif category_slug == 'videokarta':
-            category = get_object_or_404(Category, slug=category_slug)
-            products = products.filter(category=category)
             filter_product = VideoCartFilter(request.GET, queryset=VideoCardDetails.objects.all())
             pagination = Paginator(filter_product.qs, 4)
         else:
-            category = get_object_or_404(Category, slug=category_slug)
-            products = products.filter(category=category)
             filter_product = ProductFilter(request.GET, queryset=Product.objects.filter(category=category))
             pagination = Paginator(filter_product.qs, 4)
 
@@ -73,12 +67,16 @@ def product_detail(request, id, slug):
     keyboard = KeyboardDetails.objects.all()
     keyboard = keyboard.filter(product=one_product)
 
+    videokarta = VideoCardDetails.objects.all()
+    videokarta = videokarta.filter(product=one_product)
+
     context = {
         'product': one_product,
         'cart_product_form': cart_product_form,
         'monitor': monitor,
         'laptop': laptop,
         'keyboard': keyboard,
+        'videokarta': videokarta,
     }
 
     return render(request, 'detail.html', context)

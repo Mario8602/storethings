@@ -38,8 +38,14 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label='Введите логин', widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Введите имя профиля'
+    }))
+    password = forms.CharField(label='Подтверждение пароля', widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Подтверждение пароля'
+    }))
     # username = forms.CharField(label='Имя пользователя', widget=forms.TextInput(attrs={
     #     'class': 'form-control',
     #     'placeholder': 'Имя профиля'

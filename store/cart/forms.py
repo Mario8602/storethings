@@ -10,7 +10,37 @@ class CartAddProductForm(forms.Form):
 
 
 class OrderAddForm(forms.ModelForm):
+    firstName = forms.CharField(label='', widget=forms.Textarea(attrs={
+        'class': 'md-textarea form-control',
+        'placeholder': 'Имя',
+        'rows': 1,
+    }))
+    lastName = forms.CharField(label='', widget=forms.Textarea(attrs={
+        'class': 'md-textarea form-control',
+        'placeholder': 'Фамилия',
+        'rows': 1,
+    }))
+    email = forms.EmailField(label='', widget=forms.Textarea(attrs={
+        'class': 'md-textarea form-control',
+        'placeholder': 'Введите email',
+        'rows': 1,
+    }))
+    postCode = forms.CharField(label='', widget=forms.Textarea(attrs={
+        'class': 'md-textarea form-control',
+        'placeholder': 'Введите ваш почтовый индекс',
+        'rows': 1,
+    }))
+    city = forms.CharField(label='', widget=forms.Textarea(attrs={
+        'class': 'md-textarea form-control',
+        'placeholder': 'Введите ваш город',
+        'rows': 1,
+    }))
+    address = forms.CharField(label='', widget=forms.Textarea(attrs={
+        'class': 'md-textarea form-control',
+        'placeholder': 'Введите ваш адрес',
+        'rows': 1,
+    }))
 
     class Meta:
         model = Order
-        fields = ['firstName', 'lastName', 'email', 'phoneNumber', 'postCode', 'city', 'address',]
+        fields = ['phoneNumber',]

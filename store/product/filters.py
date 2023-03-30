@@ -29,10 +29,22 @@ class LaptopFilter(django_filters.FilterSet):
 
 
 class KeyboardFilter(django_filters.FilterSet):
+    # product__price = django_filters.RangeFilter()
+    # class Meta:
+    #     model = KeyboardDetails
+    #     fields = ['product__price', 'color', 'key_backlight', 'keycap_material', 'programmable_keys', 'case_material', 'water_protection']
 
     class Meta:
         model = KeyboardDetails
-        fields = ['color', 'key_backlight', 'keycap_material', 'programmable_keys', 'case_material', 'water_protection']
+        fields = {
+            'product__price': ['lt', 'gt'],
+            'color': ['exact'],
+            'key_backlight': ['exact', 'contains'],
+            'keycap_material': ['exact', 'contains'],
+            'programmable_keys': ['contains'],
+            'case_material': ['contains'],
+            'water_protection': ['contains'],
+        }
 
 
 class VideoCartFilter(django_filters.FilterSet):
