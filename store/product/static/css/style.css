@@ -128,3 +128,27 @@ td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
 }
+
+.button-alt {
+    margin-top: 40px;
+    background-color: white;
+    color: black;
+    border: 1px solid #949494;
+    border-radius: 10px;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    width: 100%;
+    max-width: 390px;
+    min-width: 100px;
+    height: 40px;
+}
+
+.button-alt:hover {
+    background-color: #525252;
+    color: white;
+}
+
+.font {
+  font-family: Verdana, "Times New Roman";
+  font-weight: 500;
+}

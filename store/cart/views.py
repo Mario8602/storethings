@@ -1,7 +1,8 @@
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib import messages
 from django.core.mail import send_mail
 from django.db.models import F
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 
@@ -18,11 +19,16 @@ def cart_add(request, product_id):
     """ функции для работы с корзиной: добавление, удаление """
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-    form = CartAddProductForm(request.POST)
-    if form.is_valid():
-        clean_data = form.cleaned_data
-        cart.add(product=product, amount=clean_data['amount'], update_amount=clean_data['update'])
-    return redirect('cart:cart_detail')
+    if product.amount != 0:
+        form = CartAddProductForm(request.POST)
+        if form.is_valid():
+            clean_data = form.cleaned_data
+            cart.add(product=product, amount=clean_data['amount'], update_amount=clean_data['update'])
+        return redirect('cart:cart_detail')
+    else:
+        form = CartAddProductForm()
+        messages.error(request, 'Нет в наличии!')
+        return HttpResponseRedirect(product.get_absolute_url())
 
 
 def cart_remove(request, product_id):

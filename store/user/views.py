@@ -1,7 +1,5 @@
 from django.contrib.auth import login, logout
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView
 from django.contrib import messages
 
@@ -16,19 +14,22 @@ from .models import CustomUser
 
 
 def register_user(request):
+    """ Регистрация пользователей на сайте """
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
-            messages.success(request, 'Успешная регистрация.')
-            return redirect('prod:prod_list')
+
+            # login(request, user)
+            # messages.success(request, 'Успешная регистрация.')
+            # return redirect('prod:prod_list')
         messages.error(request, 'Ошибка при регистрации.')
     form = CustomUserCreationForm()
     return render(request, 'signup.html', {"form_signup": form})
 
 
 def login_user(request):
+    """ Вход на сайт после регистрации """
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():

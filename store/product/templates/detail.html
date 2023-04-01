@@ -28,6 +28,11 @@ Products
                     {{ cart_product_form }}
                     {% csrf_token %}
                     <input type="submit" value="Add to cart">
+                    {% for message in messages %}
+                    <div class="alert {{message.tags}} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
                 </form>
                 {{ product.body|linebreaks }}
                 {% if product.category.slug == "monitor" %}

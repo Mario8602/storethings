@@ -1,12 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form method="post">
-    {% csrf_token %}
-    <div class="">
-        {{ form_signup.as_p }}
+<div class="container my-3">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4 prod-con-login">
+            <form method="post">
+                {% csrf_token %}
+                <div class="">
+                    {{ form_signup.as_p }}
+                </div>
+                <input class="button-alt font" type="submit" value="Зарегистрироваться">
+            </form>
+        </div>
     </div>
-    <input class="" type="submit" value="signup">
-</form>
-
+</div>
 {% endblock %}
