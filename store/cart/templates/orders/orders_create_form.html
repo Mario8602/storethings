@@ -20,7 +20,13 @@
         <p>Общая стоимость: {{ cart.get_total_price }}</p>
 
         <form action="." method="post" class="order-form">
-            {{ order_form.as_p }}
+            <p>{{ order_form.firstName }}</p>
+            <p>{{ order_form.lastName }}</p>
+            <p>{{ order_form.email }}</p>
+            <p>{{ order_form.phoneNumber }}</p>
+            <p>{{ order_form.postCode }}</p>
+            <p>{{ order_form.city }}</p>
+            <p>{{ order_form.address }}</p>
             <p><input type="submit" value="Оплатить"></p>
             {% csrf_token %}
         </form>

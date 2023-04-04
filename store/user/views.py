@@ -1,11 +1,19 @@
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, get_user_model
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import ValidationError
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.tokens import default_token_generator as token_generator
+from django.utils.http import urlsafe_base64_decode
+from django.views import View
 from django.views.generic import CreateView, DetailView
 from django.contrib import messages
 
+
 from .forms import CustomUserCreationForm, LoginForm
 from .models import CustomUser
-
+from .verify_acc import verify_acc_email
+# from .tasks import verify_acc_email
+# from cart.tasks import verify_acc_email
 
 # class SignUpView(CreateView):
 #     form_class = CustomUserCreationForm
@@ -19,11 +27,13 @@ def register_user(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-
+            verify_acc_email(request, user)
+            return redirect('users:confirm_email')
             # login(request, user)
             # messages.success(request, 'Успешная регистрация.')
             # return redirect('prod:prod_list')
-        messages.error(request, 'Ошибка при регистрации.')
+        else:
+            messages.error(request, 'Ошибка при регистрации.')
     form = CustomUserCreationForm()
     return render(request, 'signup.html', {"form_signup": form})
 
@@ -57,3 +67,34 @@ class ShowProfilePageView(DetailView):
         page_user = get_object_or_404(CustomUser, id=self.kwargs['pk'])
         context['page_user'] = page_user
         return context
+
+
+User = get_user_model()
+
+
+class EmailVerifyView(View):
+
+    def get(self, request, uidb64, token):
+        user = self.get_user(uidb64)
+        if user is not None and token_generator.check_token(user, token):
+            user.email_verify = True
+            user.save()
+            login(request, user)
+            return redirect('prod:prod_list')
+        return redirect('invalid_verify')
+
+    @staticmethod
+    def get_user(uidb64):
+        try:
+            # urlsafe_base64_decode() decodes to bytestring
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = User.objects.get(pk=uid)
+        except (
+                TypeError,
+                ValueError,
+                OverflowError,
+                CustomUser.DoesNotExist,
+                ValidationError,
+        ):
+            user = None
+        return user

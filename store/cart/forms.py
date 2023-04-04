@@ -1,5 +1,7 @@
 from django import forms
+from phonenumber_field.formfields import PhoneNumberField
 from .models import Order
+
 
 PRODUCT_AMOUNT_CHOICES = [(i, str(i)) for i in range(1, 21)]
 
@@ -7,6 +9,13 @@ PRODUCT_AMOUNT_CHOICES = [(i, str(i)) for i in range(1, 21)]
 class CartAddProductForm(forms.Form):
     amount = forms.TypedChoiceField(choices=PRODUCT_AMOUNT_CHOICES, coerce=int)
     update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
+
+
+# class OrderAddForm(forms.ModelForm):
+#
+#     class Meta:
+#         model = Order
+#         fields = ['firstName', 'lastName', 'email', 'phoneNumber', 'postCode', 'city', 'address',]
 
 
 class OrderAddForm(forms.ModelForm):
@@ -23,6 +32,11 @@ class OrderAddForm(forms.ModelForm):
     email = forms.EmailField(label='', widget=forms.Textarea(attrs={
         'class': 'md-textarea form-control',
         'placeholder': 'Введите email',
+        'rows': 1,
+    }))
+    phoneNumber = PhoneNumberField(widget=forms.Textarea(attrs={
+        'class': 'md-textarea form-control',
+        'placeholder': 'Введите телефон',
         'rows': 1,
     }))
     postCode = forms.CharField(label='', widget=forms.Textarea(attrs={
@@ -43,4 +57,4 @@ class OrderAddForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ['phoneNumber',]
+        fields = ['firstName', 'lastName', 'email', 'phoneNumber', 'postCode', 'city', 'address',]

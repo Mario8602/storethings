@@ -10,6 +10,11 @@
                 <div class="">
                     {{ form_signup.as_p }}
                 </div>
+                {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
                 <input class="button-alt font" type="submit" value="Зарегистрироваться">
             </form>
         </div>

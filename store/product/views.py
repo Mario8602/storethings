@@ -12,7 +12,7 @@ def products_by_category(request, category_slug=None):
     categories = Category.objects.all()
     products = Product.objects.all().order_by('?')
 
-    filter_product = ProductFilter(request.GET, queryset=Product.objects.all().order_by('?'))
+    filter_product = ProductFilter(request.GET, queryset=Product.objects.all())
     pagination = Paginator(filter_product.qs, 8)
 
     page_number = request.GET.get('page')
