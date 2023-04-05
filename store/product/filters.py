@@ -29,6 +29,7 @@ class LaptopFilter(django_filters.FilterSet):
 
 
 class KeyboardFilter(django_filters.FilterSet):
+
     # product__price = django_filters.RangeFilter()
     # class Meta:
     #     model = KeyboardDetails

@@ -1,10 +1,11 @@
 from django import forms
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django.core.exceptions import ValidationError
 
 from .models import CustomUser
-from .verify_acc import verify_acc_email
+# from .verify_acc import verify_acc_email
+from cart.tasks import verify_acc_email
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -43,18 +44,22 @@ class CustomUserChangeForm(UserChangeForm):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'email')
+        fields = ('username', 'email', 'phone_number', 'email_verified')
+
+
+User = get_user_model()
 
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(label='Введите логин', widget=forms.TextInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'Введите имя профиля'
-    }))
-    password = forms.CharField(label='Подтверждение пароля', widget=forms.PasswordInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'Подтверждение пароля'
-    }))
+
+    # username = forms.CharField(label='Введите логин', widget=forms.TextInput(attrs={
+    #     'class': 'form-control',
+    #     'placeholder': 'Введите имя профиля'
+    # }))
+    # password = forms.CharField(label='Подтверждение пароля', widget=forms.PasswordInput(attrs={
+    #     'class': 'form-control',
+    #     'placeholder': 'Подтверждение пароля'
+    # }))
 
     def clean(self):
         username = self.cleaned_data.get("username")
@@ -62,12 +67,16 @@ class LoginForm(AuthenticationForm):
 
         if username is not None and password:
             self.user_cache = authenticate(
-                self.request, username=username, password=password
+                self.request,
+                username=username,
+                password=password
             )
-
             if not self.user_cache.email_verified:
-                raise self.get_invalid_login_error()
-
+                verify_acc_email.delay(self.request, self.user_cache)
+                raise ValidationError(
+                    'Почта не подтверждена',
+                    code='invalid_login',
+                )
             if self.user_cache is None:
                 raise self.get_invalid_login_error()
             else:

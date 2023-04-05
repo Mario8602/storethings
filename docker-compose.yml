@@ -41,6 +41,16 @@ services:
       - 15672:15672
       - 5672:5672
 
+  flower:
+    image: mher/flower
+    environment:
+      - CELERY_BROKER_URL=amqp://myuser:mypass@rabbit:5672/
+      - FLOWER_PORT=8888
+    ports:
+      - 8888:8888
+    depends_on:
+      - rabbit
+
 #  erlang:
 #    image: erlang:2
 #    hostname: erlang
@@ -57,3 +67,14 @@ services:
       - rabbit
     depends_on:
       - rabbit
+
+#  flower1:
+#    image: mher/flower
+#    command: ["flower", "--address=0.0.0.0", "--broker=amqp://myuser:mypass@rabbitmq:5672/","--port=5555", "--logging=DEBUG"]
+#    ports:
+#      - 5555:5555
+#    depends_on:
+#      - rabbit
+#      - worker
+#      - internet-shop
+

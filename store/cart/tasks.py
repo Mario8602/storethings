@@ -25,25 +25,25 @@ def order_created(order_id, email_to, name_to):
     )
 
 
-# @app.task()
-# def verify_acc_email(user):
-#     # current_site = get_current_site(request)
-#
-#     context = {
-#         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-#         "user": user,
-#         "token": token_generator.make_token(user),
-#     }
-#
-#     message = render_to_string(
-#         'verify_email.html',
-#         context=context,
-#     )
-#
-#     email = EmailMessage(
-#         'Verify email',
-#         message,
-#         to=[user.email],
-#     )
-#
-#     email.send()
+@app.task()
+def verify_acc_email(domain, user_name, user_pk, user_mail):
+
+    context = {
+        "domain": domain,
+        "uid": urlsafe_base64_encode(force_bytes(user_pk)),
+        "user": user_name,
+        "token": token_generator.make_token(user_name),
+    }
+
+    message = render_to_string(
+        'verify_email.html',
+        context=context,
+    )
+
+    email = EmailMessage(
+        'Verify email',
+        message,
+        to=[user_mail],
+    )
+
+    email.send()

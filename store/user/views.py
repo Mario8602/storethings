@@ -1,9 +1,13 @@
 from django.contrib.auth import login, logout, get_user_model
+from django.contrib.auth.views import LoginView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.tokens import default_token_generator as token_generator
-from django.utils.http import urlsafe_base64_decode
+from django.template.loader import render_to_string
+from django.urls import reverse_lazy
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import View
 from django.views.generic import CreateView, DetailView
 from django.contrib import messages
@@ -11,14 +15,9 @@ from django.contrib import messages
 
 from .forms import CustomUserCreationForm, LoginForm
 from .models import CustomUser
-from .verify_acc import verify_acc_email
+# from .verify_acc import verify_acc_email
 # from .tasks import verify_acc_email
-# from cart.tasks import verify_acc_email
-
-# class SignUpView(CreateView):
-#     form_class = CustomUserCreationForm
-#     success_url = reverse_lazy('login')
-#     template_name = 'signup.html'
+from cart.tasks import verify_acc_email
 
 
 def register_user(request):
@@ -27,7 +26,24 @@ def register_user(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            verify_acc_email(request, user)
+
+            current_site = get_current_site(request)
+            domain = current_site.domain
+            user_name = user.username
+            user_pk = user.pk
+            user_mail = user.email
+            # context = {
+            #     "domain": request.get_host(),
+            #     "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+            #     "user": user,
+            #     "token": token_generator.make_token(user),
+            # }
+            # message = render_to_string(
+            #     'verify_email.html',
+            #     context=context,
+            # )
+
+            verify_acc_email.delay(domain, user_name, user_pk, user_mail)
             return redirect('users:confirm_email')
             # login(request, user)
             # messages.success(request, 'Успешная регистрация.')
@@ -35,21 +51,25 @@ def register_user(request):
         else:
             messages.error(request, 'Ошибка при регистрации.')
     form = CustomUserCreationForm()
-    return render(request, 'signup.html', {"form_signup": form})
+    return render(request, 'registration/signup.html', {"form_signup": form})
 
 
-def login_user(request):
-    """ Вход на сайт после регистрации """
-    if request.method == 'POST':
-        form = LoginForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('/')
-    else:
-        form = LoginForm()
+# def login_user(request):
+#     """ Вход на сайт после регистрации """
+#     if request.method == 'POST':
+#         form = LoginForm(data=request.POST)
+#         if form.is_valid():
+#             user = form.get_user()
+#             login(request, user)
+#             return redirect('/')
+#     else:
+#         form = LoginForm()
+#
+#     return render(request, 'login.html', {'form': form})
 
-    return render(request, 'login.html', {'form': form})
+
+class MyLoginView(LoginView):
+    form_class = LoginForm
 
 
 def logout_user(request):
@@ -77,11 +97,11 @@ class EmailVerifyView(View):
     def get(self, request, uidb64, token):
         user = self.get_user(uidb64)
         if user is not None and token_generator.check_token(user, token):
-            user.email_verify = True
+            user.email_verified = True
             user.save()
             login(request, user)
             return redirect('prod:prod_list')
-        return redirect('invalid_verify')
+        return redirect('users:invalid_verify')
 
     @staticmethod
     def get_user(uidb64):
@@ -93,7 +113,7 @@ class EmailVerifyView(View):
                 TypeError,
                 ValueError,
                 OverflowError,
-                CustomUser.DoesNotExist,
+                User.DoesNotExist,
                 ValidationError,
         ):
             user = None

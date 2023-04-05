@@ -8,11 +8,10 @@ from .views import EmailVerifyView
 app_name = 'users'
 
 urlpatterns = [
-    # path('login/', MyLoginView.as_view(), name=login)
-    # path(r'signup/', views.SignUpView.as_view(), name='signup'),
+    # path(r'login/', views.login_user, name='login'),
+    path(r'login/', views.MyLoginView.as_view(), name='login'),
     path(r'signup/', views.register_user, name='signup'),
     path(r'profile/<int:pk>/', views.ShowProfilePageView.as_view(), name='profile'),
-    path(r'login/', views.login_user, name='login'),
     path(r'confirm_email/', TemplateView.as_view(template_name='confirm_email.html'), name='confirm_email'),
     path(
             "verify_email/<uidb64>/<token>/",
