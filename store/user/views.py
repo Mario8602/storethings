@@ -28,22 +28,21 @@ def register_user(request):
             user = form.save()
 
             current_site = get_current_site(request)
-            domain = current_site.domain
-            user_name = user.username
-            user_pk = user.pk
             user_mail = user.email
-            # context = {
-            #     "domain": request.get_host(),
-            #     "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-            #     "user": user,
-            #     "token": token_generator.make_token(user),
-            # }
-            # message = render_to_string(
-            #     'verify_email.html',
-            #     context=context,
-            # )
 
-            verify_acc_email.delay(domain, user_name, user_pk, user_mail)
+            context = {
+                "domain": current_site.domain,
+                "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                "user": user,
+                "token": token_generator.make_token(user),
+            }
+            message = render_to_string(
+                'verify_email.html',
+                context=context,
+            )
+
+            verify_acc_email.delay(message, user_mail)
+            # verify_acc_email.delay(request, user)
             return redirect('users:confirm_email')
             # login(request, user)
             # messages.success(request, 'Успешная регистрация.')
