@@ -51,7 +51,7 @@ class OrderProdInline(admin.TabularInline):
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('firstName', 'lastName', 'email', 'city', 'created_at', 'payment')
+    list_display = ('firstName', 'lastName', 'email', 'city', 'created_at', 'payment', 'buyer')
     verbose_name = 'portrait'
     inlines = [OrderProdInline]
     actions = [export_to_csv]

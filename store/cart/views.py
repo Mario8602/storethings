@@ -47,10 +47,15 @@ def test_order(request):
     """ Создание заказа и его обработка """
     cart = Cart(request)
     order_form = OrderAddForm()
+    user = request.user
     if request.method == 'POST':
         order_form = OrderAddForm(request.POST)
         if order_form.is_valid():
-            order = order_form.save()
+            # if request.user.is_authenticated:
+            #     order_form.buyer = Order['buyer']
+            order = order_form.save(commit=False)
+            order.buyer = user
+            order.save()
             for prod in cart:
                 OrderProd.objects.create(order=order,
                                          product=prod['product'],

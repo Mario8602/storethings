@@ -2,6 +2,19 @@
 
 {% block content %}
 
-HELLO
+
+<div class="container my-3">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4 prod-con-login">
+            <p>Логин: {{ user.username }}</p>
+            <p>Ваше имя: {{ user.first_name }}</p>
+            <p>Ваша фамилия: {{ user.last_name }}</p>
+            <p>Почта: {{ user.email }}</p>
+            <p>Номер телефона: {{ user.phone_number }}</p>
+
+        </div>
+    </div>
+</div>
 
 {% endblock %}

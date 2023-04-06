@@ -30,6 +30,15 @@ services:
       - ../2. Init Database:/docker-entrypoint-initdb.d
       - .:/var/lib/postgresql/data
 
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - 5050:80
+
   rabbit:
     image: rabbitmq:3.11.0-management-alpine
     hostname: rabbit
@@ -68,13 +77,5 @@ services:
     depends_on:
       - rabbit
 
-#  flower1:
-#    image: mher/flower
-#    command: ["flower", "--address=0.0.0.0", "--broker=amqp://myuser:mypass@rabbitmq:5672/","--port=5555", "--logging=DEBUG"]
-#    ports:
-#      - 5555:5555
-#    depends_on:
-#      - rabbit
-#      - worker
-#      - internet-shop
+
 

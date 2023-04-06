@@ -44,7 +44,7 @@ class CustomUserChangeForm(UserChangeForm):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'phone_number', 'email_verified')
+        fields = ('username', 'email', 'phone_number', 'email_verified', 'first_name', 'last_name')
 
 
 User = get_user_model()
@@ -52,14 +52,14 @@ User = get_user_model()
 
 class LoginForm(AuthenticationForm):
 
-    # username = forms.CharField(label='Введите логин', widget=forms.TextInput(attrs={
-    #     'class': 'form-control',
-    #     'placeholder': 'Введите имя профиля'
-    # }))
-    # password = forms.CharField(label='Подтверждение пароля', widget=forms.PasswordInput(attrs={
-    #     'class': 'form-control',
-    #     'placeholder': 'Подтверждение пароля'
-    # }))
+    username = forms.CharField(label='Введите логин', widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Введите имя профиля'
+    }))
+    password = forms.CharField(label='Подтверждение пароля', widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Подтверждение пароля'
+    }))
 
     def clean(self):
         username = self.cleaned_data.get("username")
@@ -83,35 +83,3 @@ class LoginForm(AuthenticationForm):
                 self.confirm_login_allowed(self.user_cache)
 
         return self.cleaned_data
-
-    # def clean(self):
-    #     username = self.cleaned_data.get("username")
-    #     password = self.cleaned_data.get("password")
-    #
-    #     if username is not None and password:
-    #         self.user_cache = authenticate(
-    #             self.request,
-    #             username=username,
-    #             password=password
-    #         )
-    #         if not self.user_cache.email_verified:
-    #             verify_acc_email(self.request, self.user_cache)
-    #             raise ValidationError(
-    #                 'Ваша почта не подтверждена. Пожалуйста, проверьте вашу электронную почту.',
-    #                 code='invalid_login',
-    #             )
-    #         if self.user_cache is None:
-    #             raise self.get_invalid_login_error()
-    #         else:
-    #             self.confirm_login_allowed(self.user_cache)
-    #
-    #     return self.cleaned_data
-
-    # username = forms.CharField(label='Имя пользователя', widget=forms.TextInput(attrs={
-    #     'class': 'form-control',
-    #     'placeholder': 'Имя профиля'
-    # }))
-    # password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={
-    #     'class': 'form-control',
-    #     'placeholder': 'Пароль'
-    # }))

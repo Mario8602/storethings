@@ -2,25 +2,29 @@ from django.db import models
 
 from product.models import Product
 
+from user.models import CustomUser
+
 
 class Order(models.Model):
     """ Модель для хранения информации о заказе и заказчике """
-    firstName = models.CharField(max_length=30)
-    lastName = models.CharField(max_length=30)
+    firstName = models.CharField(max_length=30, blank=True, null=False)
+    lastName = models.CharField(max_length=30, blank=True, null=False)
     email = models.EmailField()
-    phoneNumber = models.CharField(max_length=12)
-    postCode = models.CharField(max_length=10)
+    phoneNumber = models.CharField(max_length=12, blank=True, null=False)
+    postCode = models.CharField(max_length=10, blank=True, null=False)
     city = models.CharField(max_length=50)
-    address = models.CharField(max_length=250, default='')
+    address = models.CharField(max_length=250, default='', blank=True, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     payment = models.BooleanField(default=False)
+    # buyer = models.CharField(blank=True, null=True)
+    buyer = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, related_name='buyer', blank=True, null=True)
 
     class Meta:
         ordering = ('-created_at',)
 
     def __str__(self):
-        return self.id
+        return f'{self.id}'
 
     def get_cost_total(self):
         return sum(item.get_cost() for item in self.item.all())
@@ -42,7 +46,7 @@ class OrderProd(models.Model):
         ordering = ('price',)
 
     def __str__(self):
-        return self.id
+        return f'{self.id}'
 
     def get_cost(self):
         return self.price * self.amount
