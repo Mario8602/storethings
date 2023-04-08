@@ -1,7 +1,13 @@
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.tokens import default_token_generator as token_generator
 from django.core.exceptions import ValidationError
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+
 
 from .models import CustomUser
 # from .verify_acc import verify_acc_email
@@ -71,8 +77,23 @@ class LoginForm(AuthenticationForm):
                 username=username,
                 password=password
             )
+
             if not self.user_cache.email_verified:
-                verify_acc_email.delay(self.request, self.user_cache)
+                # verify_acc_email.delay(self.request, self.user_cache)
+                current_site = get_current_site(self.request)
+                user_mail = self.user_cache.email
+                context = {
+                    "domain": current_site.domain,
+                    "uid": urlsafe_base64_encode(force_bytes(self.user_cache.pk)),
+                    "user": self.user_cache,
+                    "token": token_generator.make_token(self.user_cache),
+                }
+                message = render_to_string(
+                    'verify_email.html',
+                    context=context,
+                )
+                verify_acc_email.delay(message, user_mail)
+
                 raise ValidationError(
                     'Почта не подтверждена',
                     code='invalid_login',

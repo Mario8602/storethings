@@ -18,6 +18,7 @@ from .models import CustomUser
 # from .verify_acc import verify_acc_email
 # from .tasks import verify_acc_email
 from cart.tasks import verify_acc_email
+from cart.models import Order
 
 
 def register_user(request):
@@ -29,7 +30,6 @@ def register_user(request):
 
             current_site = get_current_site(request)
             user_mail = user.email
-
             context = {
                 "domain": current_site.domain,
                 "uid": urlsafe_base64_encode(force_bytes(user.pk)),
@@ -80,12 +80,16 @@ class ShowProfilePageView(DetailView):
     model = CustomUser
     template_name = 'profile_user.html'
 
-    def get_context_data(self, *args, **kwargs):
-        users = CustomUser.objects.all()
-        context = super(ShowProfilePageView, self).get_context_data(*args, **kwargs)
-        page_user = get_object_or_404(CustomUser, id=self.kwargs['pk'])
-        context['page_user'] = page_user
-        return context
+    # def get_order(self):
+    #     order = Order.objects.all()
+
+
+    # def get_context_data(self, *args, **kwargs):
+    #     users = CustomUser.objects.all()
+    #     context = super(ShowProfilePageView, self).get_context_data(*args, **kwargs)
+    #     page_user = get_object_or_404(CustomUser, id=self.kwargs['pk'])
+    #     context['page_user'] = page_user
+    #     return context
 
 
 User = get_user_model()
