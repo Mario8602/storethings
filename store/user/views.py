@@ -2,6 +2,7 @@ from django.contrib.auth import login, logout, get_user_model
 from django.contrib.auth.views import LoginView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from django.template.loader import render_to_string
@@ -18,7 +19,7 @@ from .models import CustomUser
 # from .verify_acc import verify_acc_email
 # from .tasks import verify_acc_email
 from cart.tasks import verify_acc_email
-from cart.models import Order
+from cart.models import Order, OrderProd
 
 
 def register_user(request):
@@ -80,10 +81,6 @@ class ShowProfilePageView(DetailView):
     model = CustomUser
     template_name = 'profile_user.html'
 
-    # def get_order(self):
-    #     order = Order.objects.all()
-
-
     # def get_context_data(self, *args, **kwargs):
     #     users = CustomUser.objects.all()
     #     context = super(ShowProfilePageView, self).get_context_data(*args, **kwargs)
@@ -121,3 +118,22 @@ class EmailVerifyView(View):
         ):
             user = None
         return user
+
+
+def purchase_history(request, pk):
+    # user = get_user_model()
+    user = get_object_or_404(CustomUser, pk=pk)
+    orders = Order.objects.filter(buyer=user.pk)
+    # order = Order.objects.all()
+    # orders_main = OrderProd.objects.filter(order_id=order.id)
+    orders_main = []
+    for i in orders:
+        orders_main += list(OrderProd.objects.filter(order=i))
+        # orders_main = get_object_or_404(OrderProd, order=i)
+
+    context = {
+        'user': user,
+        'orders': orders,
+        'orders_main': orders_main,
+    }
+    return render(request, 'purchase_history.html', context=context)

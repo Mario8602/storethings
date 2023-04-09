@@ -16,7 +16,6 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     payment = models.BooleanField(default=False)
-    # buyer = models.CharField(blank=True, null=True)
     buyer = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, related_name='buyer', blank=True, null=True)
 
     class Meta:
@@ -27,6 +26,8 @@ class Order(models.Model):
 
     def get_cost_total(self):
         return sum(item.get_cost() for item in self.item.all())
+
+    # def get_absolute_url(self):
 
     # def phone_number(self, phoneNumber):
     #     result = re.match(r'(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$',

@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 
 from . import views
 from .views import EmailVerifyView
+from cart.models import Order
 
 app_name = 'users'
 
@@ -18,5 +19,6 @@ urlpatterns = [
             EmailVerifyView.as_view(),
             name="verify_email",
         ),
-    path(r'invalid_verify/', TemplateView.as_view(template_name='invalid_verify.html'), name='invalid_verify')
+    path(r'invalid_verify/', TemplateView.as_view(template_name='invalid_verify.html'), name='invalid_verify'),
+    path(r'profile/<int:pk>/archive/', views.purchase_history, name='archive')
 ]

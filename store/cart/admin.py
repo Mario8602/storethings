@@ -7,25 +7,6 @@ from django.http import HttpResponse
 from .models import OrderProd, Order
 
 
-# def export_to_csv(self, request, queryset):
-#     meta = self.model._meta
-#     response = HttpResponse(content_type='text/csv')
-#     response['Content-Disposition'] = f'attachment; filename={meta.verbose_name}.csv'
-#     writer = csv.writer(response)
-#     fields = [field for field in meta.get_fields() if not field.many_to_many and not field.one_to_many]
-#     writer.writerow([field.verbose_name for field in fields])
-#     for obj in queryset:
-#         data_row = []
-#         for field in fields:
-#             value = getattr(obj, field.name)
-#             if isinstance(value, datetime.datetime):
-#                 value = value.strftime('%D/%M/%Y')
-#             data_row.append(value)
-#         writer.writerow(data_row)
-#     return response
-#
-# export_to_csv.short_description = 'Export to CSV'
-
 def export_to_csv(self, request, queryset):
 
     meta = self.model._meta
@@ -41,6 +22,7 @@ def export_to_csv(self, request, queryset):
 
     return response
 
+
 export_to_csv.short_description = 'Export to CSV'
 
 
@@ -51,6 +33,7 @@ class OrderProdInline(admin.TabularInline):
 
 
 class OrderAdmin(admin.ModelAdmin):
+    model = Order
     list_display = ('firstName', 'lastName', 'email', 'city', 'created_at', 'payment', 'buyer')
     verbose_name = 'portrait'
     inlines = [OrderProdInline]

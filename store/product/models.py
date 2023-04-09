@@ -134,9 +134,6 @@ class MonitorDetails(models.Model):
     def __str__(self):
         return self.model
 
-    def get_absolute_url(self):
-        return reverse('store:product_detail', args=[self.pk])
-
 
 def add_uniq_uid():
     symbol_uuid = 'QWERTYUIOPASDFGHJKLZXCVBNM1234567890'
@@ -206,9 +203,6 @@ class KeyboardDetails(models.Model):
     def __str__(self):
         return self.model
 
-    def get_absolute_url(self):
-        return reverse('store:product_detail', args=[self.pk])
-
 
 class VideoCardDetails(models.Model):
     """ Детальная информация по видеокартам """
@@ -264,6 +258,3 @@ class VideoCardDetails(models.Model):
 
     def __str__(self):
         return self.model
-
-    def get_absolute_url(self):
-        return reverse('store:product_detail', args=[self.pk])
