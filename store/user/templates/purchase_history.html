@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container my-3">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8 prod-con">
+            <div class="row">
+                <div class="">
+                    <h3>Ваши заказы:</h3>
+                </div>
+                {% for m in orders %}
+                <div class="text-archive">
+                    <h4>{{ m.firstName }}</h4>
+                    <h4>{{ m.price }}</h4>
+                </div>
+                {% for i in orders_main %}
+                {% if i.order.id == m.id %}
+                <div class="col-2">
+                    <img class="displayed" src="{{ i.product.photo.url }}" href="/" width="120">
+                </div>
+                <div class="col-4 text-archive">
+                    <p>{{ i.product.name }}</p>
+                    <p>Количество: {{ i.amount }}</p>
+                    <p>Цена: {{ i.get_cost }} руб.</p>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <div class="text-archive-date">
+                    <p>Дата заказа: {{ m.created_at }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

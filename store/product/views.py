@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
+from django.views.generic import ListView
+from django.db.models import Q
 
 from .filters import ProductFilter, MonitorFilter, LaptopFilter, KeyboardFilter, VideoCartFilter
 from cart.forms import CartAddProductForm
@@ -81,3 +83,14 @@ def product_detail(request, id, slug):
 
     return render(request, 'detail.html', context)
 
+
+class SearchResultView(ListView):
+    model = Product
+    template_name = 'search_result.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = Product.objects.filter(
+            Q(name__icontains=query) | Q(category__name__icontains=query)
+        )
+        return object_list

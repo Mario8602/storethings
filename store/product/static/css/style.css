@@ -161,3 +161,21 @@ td {
 .text-archive-date {
     text-align: right;
 }
+
+.relight {
+    padding-left: 250px;
+    padding-right: 250px;
+}
+
+.create-line {
+    border-top: 3px solid #dedede;
+}
+
+.padtext-nav {
+    padding-left: 20px;
+}
+
+.text-low {
+    font-size: 14px;
+    text-align: center;
+}

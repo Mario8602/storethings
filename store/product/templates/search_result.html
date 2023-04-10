@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for product in object_list %}
+<div class="container my-3">
+    <div class="pb-3 prod-con">
+        <div class="row">
+            <div class="col-2">
+                <img class="displayed" src="{{ product.photo.url }}" href="{{ product.get_absolute_url }}"
+                     width="120">
+            </div>
+            <div class="col-10 cat-product-name">
+                <div class="row">
+                    <div class="col-6">
+                        <a href="{{ product.get_absolute_url }}"><br>{{ product.name }}</a>
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+                    <div class="col-2">
+                        <a href="{{ product.get_absolute_url }}"><br>{{ product.price }}</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 cat-amount">
+                        {% if product.amount %}
+                        <a href="{{ product.get_absolute_url }}"><br>В наличии: {{ product.amount }}</a>
+                        {% else %}
+                        <a href="{{ product.get_absolute_url }}"><br>Нет в наличии.</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
