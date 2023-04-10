@@ -150,6 +150,14 @@ td {
 }
 
 .font {
-  font-family: Verdana, "Times New Roman";
-  font-weight: 500;
+    font-family: Verdana, "Times New Roman";
+    font-weight: 500;
+}
+
+.text-archive {
+    text-align: left;
+}
+
+.text-archive-date {
+    text-align: right;
 }
