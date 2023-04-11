@@ -15,7 +15,7 @@ def products_by_category(request, category_slug=None):
     products = Product.objects.all().order_by('?')
 
     filter_product = ProductFilter(request.GET, queryset=Product.objects.all())
-    pagination = Paginator(filter_product.qs, 8)
+    pagination = Paginator(filter_product.qs, 4)
 
     page_number = request.GET.get('page')
     page_obj = pagination.get_page(page_number)
@@ -27,7 +27,7 @@ def products_by_category(request, category_slug=None):
 
         if category_slug == "monitor":
             filter_product = MonitorFilter(request.GET, queryset=MonitorDetails.objects.all())
-            pagination = Paginator(filter_product.qs, 5)
+            pagination = Paginator(filter_product.qs, 4)
         elif category_slug == 'noutbuk':
             filter_product = LaptopFilter(request.GET, queryset=LaptopDetails.objects.all())
             pagination = Paginator(filter_product.qs, 4)

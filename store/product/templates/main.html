@@ -91,7 +91,6 @@ Products
                                 <a href="{{ product.get_absolute_url }}"><br>{{ product.name }}</a>
                             </div>
                             <div class="col-2">
-
                             </div>
                             <div class="col-2">
                                 <a href="{{ product.get_absolute_url }}"><br>{{ product.price }}</a>
@@ -111,31 +110,11 @@ Products
             </div>
             {% endfor %}
             {% endif %}
-
-            <!--            <div class="row">-->
-            <!--                {% for product in page_obj %}-->
-            <!--                <div class="col-md-6 prod-con">{{ product.name }}</div>-->
-            <!--                {% endfor %}-->
-            <!--            </div>-->
         </div>
     </div>
-    <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
+{% include 'include/pagination.html' %}
 
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-    </div>
 </div>
 
 {% endblock %}
