@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-
+from django.utils.translation import gettext_lazy as _
 
 from .models import CustomUser
 # from .verify_acc import verify_acc_email
@@ -67,6 +67,14 @@ class LoginForm(AuthenticationForm):
         'placeholder': 'Подтверждение пароля'
     }))
 
+    error_messages = {
+        "invalid_login": _(
+            "Неверный логин или пароль. Пожалуйста, попробуйте снова."
+        ),
+        "inactive": _("Этот аккаунт не активен"),
+        "not_confirmed": _("Ваш аккаунт не подтверждён")
+    }
+
     def clean(self):
         username = self.cleaned_data.get("username")
         password = self.cleaned_data.get("password")
@@ -78,8 +86,12 @@ class LoginForm(AuthenticationForm):
                 password=password
             )
 
+            if self.user_cache is None:
+                raise self.get_invalid_login_error()
+            else:
+                self.confirm_login_allowed(self.user_cache)
+
             if not self.user_cache.email_verified:
-                # verify_acc_email.delay(self.request, self.user_cache)
                 current_site = get_current_site(self.request)
                 user_mail = self.user_cache.email
                 context = {
@@ -95,12 +107,24 @@ class LoginForm(AuthenticationForm):
                 verify_acc_email.delay(message, user_mail)
 
                 raise ValidationError(
-                    'Почта не подтверждена',
+                    self.error_messages["not_confirmed"],
                     code='invalid_login',
                 )
-            if self.user_cache is None:
-                raise self.get_invalid_login_error()
             else:
                 self.confirm_login_allowed(self.user_cache)
 
         return self.cleaned_data
+
+    def confirm_login_allowed(self, user):
+        if not user.is_active:
+            raise ValidationError(
+                self.error_messages["inactive"],
+                code="inactive",
+            )
+
+    def get_invalid_login_error(self):
+        return ValidationError(
+            self.error_messages["invalid_login"],
+            code="invalid_login",
+            params={"username": self.username_field.verbose_name},
+        )
