@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load product_tags %}
 {% load static %}
 
 {% block title %}
@@ -45,6 +46,7 @@ Products
                 maximus nisl.
             </div>
             {% if category.slug %}
+            <a class="text-archive-date"><h4>{{ category.name|title }} {% total_products category %}</h4></a>
             {% for product in page_obj %}
             <div class="pb-3 prod-con">
                 <div class="row">
