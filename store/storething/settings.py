@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'phonenumber_field',
     'django_filters',
+    'haystack',
 ]
 
 MIDDLEWARE = [
@@ -88,6 +89,13 @@ WSGI_APPLICATION = 'storething.wsgi.application'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+# HAYSTACK
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr/#/~cores/mycore'
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
