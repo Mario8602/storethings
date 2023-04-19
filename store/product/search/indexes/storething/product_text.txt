@@ -1,3 +1,0 @@
-{{ object.name }}
-{{ object.tags.all|join:", " }}
-{{ object.body }}

@@ -89,13 +89,55 @@ WSGI_APPLICATION = 'storething.wsgi.application'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# HAYSTACK
+# SOLR/HAYSTACK
+HAYSTACK_BACKENDS = {
+    'solr': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://solr:8983/solr/product',  # Здесь указываем URL Solr-сервера и имя ядра
+    },
+}
+
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://127.0.0.1:8983/solr/#/~cores/mycore'
+        'URL': 'http://solr:8983/solr/product',
+        'INDEX_NAME': 'product',  # Имя индекса в Solr
+        'INCLUDE_SPELLING': True,
+        'EXCLUDED_FIELDS': ['inactive'],
+        'EXTRA_PARAMS': {
+            'facet': 'true',
+            'facet.field': ['category', 'tags'],
+        },
     },
 }
+
+HAYSTACK_SEARCH_INDEX_TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
+
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 4  # Количество результатов на страницу
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'  # Процессор сигналов для обновления индекса в режиме реального времени
+HAYSTACK_INCLUDE_APPS = [
+    'product',
+]
+
+
+# HAYSTACK_CONNECTIONS = {
+#     'default': {
+#         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+#         'URL': 'http://127.0.0.1:8983/solr/',
+#     },
+# }
+# HAYSTACK_CONNECTIONS = {
+#     'default': {
+#         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+#         'DIRS': [os.path.join(BASE_DIR, 'templates')],
+#         'URL': 'http://127.0.0.1:8983/solr/',
+#         'TIMEOUT': 60 * 5,
+#     },
+# }
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

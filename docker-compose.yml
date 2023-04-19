@@ -12,10 +12,11 @@ services:
       - DB_NAME=dbname
       - DB_USER=dbuser
       - DB_PASS=pass
+      - SOLR_URL=http://solr:8983/solr/
 
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
-      
+
     depends_on:
       - database
 
@@ -85,15 +86,15 @@ services:
     ports:
       - "8983:8983"
     volumes:
-      - ./solr/core:/opt/solr/server/solr/mycore
-      - ./solr/config:/opt/solr/server/solr/mycore/conf
-    environment:
-      - SOLR_CORE=mycore
-      - SOLR_CORE_CONF=solrconfig.xml
-      - SOLR_CORE_SCHEMA=schema.xml
-    command:
-      - solr-precreate
-      - mycore
+      - ./data:/var/solr
+    depends_on:
+      - internet-shop
+    command: >
+      solr-precreate
+      gettingstarted
+
+#volumes:
+#  data:
 
 #  solr:
 #    image: solr:9.0.0
@@ -105,7 +106,7 @@ services:
 #      - ./solr-config:/opt/solr/my-config-dir
 #    environment:
 #      - solr.allowPaths=/opt/solr,/opt/solr/server/solr/mycores,/opt/solr/my-config-dir
-#    command: bash -c "solr start && solr create_core -c my_new_core -d /opt/solr/server/solr/mycores -n data_driven_schema_configs -s /opt/solr/my-config-dir/schema.xml -c /opt/solr/my-config-dir/solrconfig.xml"
+#    command: bash -c "solr start && solr create_core -c my_new_core -d /opt/solr/server/solr/mycores -n data_driven_schema_configs -s /opt/solr/my-config-dir/schema.xml.bak -c /opt/solr/my-config-dir/solrconfig.xml"
 
 #  solr:
 #    image: solr:9.0
