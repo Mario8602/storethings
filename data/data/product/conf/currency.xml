@@ -1,0 +1,9 @@
+<currencyConfig>
+  <refreshInterval>3600</refreshInterval>
+  <currencies>
+    <currency rate="1.0" symbol="USD"/>
+    <currency rate="0.8" symbol="EUR"/>
+    <currency rate="0.7" symbol="GBP"/>
+    <!-- Добавьте дополнительные валюты здесь -->
+  </currencies>
+</currencyConfig>
