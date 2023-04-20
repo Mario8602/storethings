@@ -2,39 +2,61 @@
 
 {% block content %}
 
-{% for product in object_list %}
-<div class="container my-3">
-    <div class="pb-3 prod-con">
-        <div class="row">
-            <div class="col-2">
-                <img class="displayed" src="{{ product.photo.url }}" href="{{ product.get_absolute_url }}"
-                     width="120">
-            </div>
-            <div class="col-10 cat-product-name">
-                <div class="row">
-                    <div class="col-6">
-                        <a href="{{ product.get_absolute_url }}"><br>{{ product.name }}</a>
-                    </div>
-                    <div class="col-2">
-
-                    </div>
-                    <div class="col-2">
-                        <a href="{{ product.get_absolute_url }}"><br>{{ product.price }}</a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 cat-amount">
-                        {% if product.amount %}
-                        <a href="{{ product.get_absolute_url }}"><br>В наличии: {{ product.amount }}</a>
-                        {% else %}
-                        <a href="{{ product.get_absolute_url }}"><br>Нет в наличии.</a>
-                        {% endif %}
-                    </div>
-                </div>
+<div class="container-search">
+    <h1>Search Results</h1>
+    <p>Query: {{ query }}</p>
+    <div class="results">
+        {% for result in results %}
+        <div class="result">
+            <img src="{{ result.object.photo.url }}" alt="{{ result.object.name }}">
+            <div class="result-info">
+                <h2>{{ result.object.name }}</h2>
+                <p>Body: {{ result.object.body }}</p>
+                <p>Price: {{ result.object.price }}</p>
+                <p>Amount: {{ result.object.amount }}</p>
             </div>
         </div>
+        {% empty %}
+        <p>No results found.</p>
+        {% endfor %}
     </div>
 </div>
-{% endfor %}
+
+
+
+
+<!--{% for product in object_list %}-->
+<!--<div class="container my-3">-->
+<!--    <div class="pb-3 prod-con">-->
+<!--        <div class="row">-->
+<!--            <div class="col-2">-->
+<!--                <img class="displayed" src="{{ product.photo.url }}" href="{{ product.get_absolute_url }}"-->
+<!--                     width="120">-->
+<!--            </div>-->
+<!--            <div class="col-10 cat-product-name">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-6">-->
+<!--                        <a href="{{ product.get_absolute_url }}"><br>{{ product.name }}</a>-->
+<!--                    </div>-->
+<!--                    <div class="col-2">-->
+<!--                    </div>-->
+<!--                    <div class="col-2">-->
+<!--                        <a href="{{ product.get_absolute_url }}"><br>{{ product.price }}</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-6 cat-amount">-->
+<!--                        {% if product.amount %}-->
+<!--                        <a href="{{ product.get_absolute_url }}"><br>В наличии: {{ product.amount }}</a>-->
+<!--                        {% else %}-->
+<!--                        <a href="{{ product.get_absolute_url }}"><br>Нет в наличии.</a>-->
+<!--                        {% endif %}-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--{% endfor %}-->
 
 {% endblock %}

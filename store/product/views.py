@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import ListView
 from django.db.models import Q
+from haystack.query import SearchQuerySet
 
 from .filters import ProductFilter, MonitorFilter, LaptopFilter, KeyboardFilter, VideoCartFilter
 from cart.forms import CartAddProductForm
 from .models import Category, Product, MonitorDetails, LaptopDetails, KeyboardDetails, VideoCardDetails
+from .forms import SearchForm
 
 
 def products_by_category(request, category_slug=None):
@@ -94,3 +96,57 @@ class SearchResultView(ListView):
             Q(name__icontains=query) | Q(category__name__icontains=query)
         )
         return object_list
+
+
+# def search_product(request):
+#     """ Поиск продуктов на сайте с использованием Solr"""
+#     form = SearchForm()
+#     results = Product.objects.all()
+#     total_results = results.count()
+#     cd = ''
+#     if 'query' in request.GET:
+#         form = SearchForm(request.GET)
+#         if form.is_valid():
+#             cd = form.cleaned_data
+#             results = SearchQuerySet().models(Product).filter(content=cd['query']).load_all()
+#             total_results = results.count()
+#
+#     context = {
+#         'form': form,
+#         'cd': cd,
+#         'results': results,
+#         'total_results': total_results
+#     }
+#     return render(request, 'search_result.html', context)
+
+# def search_product(request):
+#     search_query = request.GET.get('q', '')
+#     if search_query:
+#         if search_query.is_valid():
+#             result = SearchQuerySet().models(Product).filter(content=search_query[''])
+#
+#     context = {
+#         'search_query': search_query,
+#         # 'form': form,
+#     }
+#     return render(request, 'search_result.html', context)
+
+def search_product(request):
+    query = request.GET.get('q', '')
+    # Поиск в Solr индексе по заданному запросу
+    search_results = SearchQuerySet().filter(content=query).load_all()
+    paginator = Paginator(search_results, 2)
+
+    page = request.GET.get('page')
+    try:
+        results = paginator.page(page)
+    except PageNotAnInteger:
+        results = paginator.page(1)
+    except EmptyPage:
+        results = paginator.page(paginator.num_pages)
+
+    context = {
+        'query': query,
+        'results': results,
+    }
+    return render(request, 'search_result.html', context)

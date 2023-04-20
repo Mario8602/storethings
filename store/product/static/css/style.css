@@ -282,3 +282,27 @@ td {
 .pagination__item--dots .pagination__link {
     color: #bfc0f1
 }
+
+/* Страница вывода поискового запроса */
+
+.container-search {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.result {
+    background-color: #f5f5f5;
+    border-radius: 15px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+}
+.result img {
+    max-width: 500px;
+    max-height: 300px;
+    margin-right: 20px;
+    border-radius: 5px;
+}
+.result-info {
+    flex-grow: 1;
+}

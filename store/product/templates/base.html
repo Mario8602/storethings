@@ -23,10 +23,17 @@
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
             </ul>
+
+<!--            <form role="search" action="{% url 'prod:search_result' %}" method="get">-->
+<!--                {{ form.as_p }}-->
+<!--                <input type="submit" value="Search">-->
+<!--            </form>-->
+
             <form class="d-flex searcher" role="search" action="{% url 'prod:search_result' %}" method="get">
                 <input class="form-control me-2" name="q" type="text" placeholder="Search...">
                 <button class="btn btn-outline-success" type="submit">Поиск</button>
             </form>
+
             <ul class="navbar-nav me-right mb-2 mb-lg-0">
                 <li class="nav-item">
                     {% with total_items=cart|length %}
