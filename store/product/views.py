@@ -135,18 +135,20 @@ def search_product(request):
     query = request.GET.get('q', '')
     # Поиск в Solr индексе по заданному запросу
     search_results = SearchQuerySet().filter(content=query).load_all()
-    paginator = Paginator(search_results, 2)
+    pagination = Paginator(search_results, 2)
 
-    page = request.GET.get('page')
+    page_number = request.GET.get('page')
+    # page_obj = pagination.get_page(page_number)
     try:
-        results = paginator.page(page)
+        page_obj = pagination.get_page(page_number)
     except PageNotAnInteger:
-        results = paginator.page(1)
+        page_obj = pagination.get_page(1)
     except EmptyPage:
-        results = paginator.page(paginator.num_pages)
+        page_obj = pagination.get_page(pagination.num_pages)
 
     context = {
         'query': query,
-        'results': results,
+        'search_results': search_results,
+        'page_obj': page_obj,
     }
     return render(request, 'search_result.html', context)

@@ -7,7 +7,11 @@
     {% endif %}
     {% if page_obj.number|add:'-3' >= 3 %}
     <li class="pagination__item pagination__item--dots">
+        {% if query %}
+        <a href="?q={{ query }}&page={{ page_obj.previous_page_number|add:'-3' }}">
+        {% else %}
         <a href="?page={{ page_obj.previous_page_number|add:'-3' }}">
+        {% endif %}
             <span class="pagination__link">• • •</span>
         </a>
     </li>
@@ -21,7 +25,11 @@
     </li>
     {% elif i > page_obj.number|add:'-4' and i < page_obj.number|add:'4' %}
     <li class="pagination__item">
+        {% if query %}
+        <a class="pagination__link" href="?q={{ query }}&page={{ i }}">{{ i }}</a>
+        {% else %}
         <a class="pagination__link" href="?page={{ i }}">{{ i }}</a>
+        {% endif %}
     </li>
     {% endif %}
     {% endfor %}
@@ -29,14 +37,22 @@
     {% if page_obj.has_next %}
     {% if page_obj.number|add:'4' < page_obj.paginator.num_pages %}
     <li class="pagination__item pagination__item--dots">
+        {% if query %}
+        <a href="?q={{ query }}&page={{ page_obj.next_page_number|add:'3' }}">
+        {% else %}
         <a href="?page={{ page_obj.next_page_number|add:'3' }}">
+        {% endif %}
             <span class="pagination__link">• • •</span>
         </a>
     </li>
     {% endif %}
     {% if page_obj.number|add:'3' < page_obj.paginator.num_pages %}
     <li class="pagination__item">
+        {% if query %}
+        <a class="pagination__link" href="?q={{ query }}&page={{ page_obj.paginator.num_pages }}">
+        {% else %}
         <a class="pagination__link" href="?page={{ page_obj.paginator.num_pages }}">
+        {% endif %}
             {{ page_obj.paginator.num_pages }}
         </a>
     </li>

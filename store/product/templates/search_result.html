@@ -3,15 +3,15 @@
 {% block content %}
 
 <div class="container-search">
-    <h1>Search Results</h1>
-    <p>Query: {{ query }}</p>
+    <h1>Результаты поиска</h1>
+    <p>Ваш запрос: {{ query }}</p>
     <div class="results">
-        {% for result in results %}
+        {% for result in page_obj %}
         <div class="result">
-            <img src="{{ result.object.photo.url }}" alt="{{ result.object.name }}">
+            <img src="{{ result.object.photo.url }}" alt="{{ result.object.name }}" width="250" height="100">
             <div class="result-info">
-                <h2>{{ result.object.name }}</h2>
-                <p>Body: {{ result.object.body }}</p>
+                <h4>{{ result.object.name }}</h4>
+                <p>Body: {{ result.object.body|truncatechars:200 }}</p>
                 <p>Price: {{ result.object.price }}</p>
                 <p>Amount: {{ result.object.amount }}</p>
             </div>
@@ -20,43 +20,22 @@
         <p>No results found.</p>
         {% endfor %}
     </div>
-</div>
-
-
-
-
-<!--{% for product in object_list %}-->
-<!--<div class="container my-3">-->
-<!--    <div class="pb-3 prod-con">-->
-<!--        <div class="row">-->
-<!--            <div class="col-2">-->
-<!--                <img class="displayed" src="{{ product.photo.url }}" href="{{ product.get_absolute_url }}"-->
-<!--                     width="120">-->
-<!--            </div>-->
-<!--            <div class="col-10 cat-product-name">-->
-<!--                <div class="row">-->
-<!--                    <div class="col-6">-->
-<!--                        <a href="{{ product.get_absolute_url }}"><br>{{ product.name }}</a>-->
-<!--                    </div>-->
-<!--                    <div class="col-2">-->
-<!--                    </div>-->
-<!--                    <div class="col-2">-->
-<!--                        <a href="{{ product.get_absolute_url }}"><br>{{ product.price }}</a>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="row">-->
-<!--                    <div class="col-6 cat-amount">-->
-<!--                        {% if product.amount %}-->
-<!--                        <a href="{{ product.get_absolute_url }}"><br>В наличии: {{ product.amount }}</a>-->
-<!--                        {% else %}-->
-<!--                        <a href="{{ product.get_absolute_url }}"><br>Нет в наличии.</a>-->
-<!--                        {% endif %}-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+    {% include 'include/pagination.html' %}
+<!--    <div class="pagination">-->
+<!--        <span class="step-links">-->
+<!--            {% if page_obj.has_previous %}-->
+<!--                <a href="?q={{ query }}&page=1">&lt;&lt; first</a>-->
+<!--                <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}">previous</a>-->
+<!--            {% endif %}-->
+<!--            <span class="current">-->
+<!--                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.-->
+<!--            </span>-->
+<!--            {% if page_obj.has_next %}-->
+<!--                <a href="?q={{ query }}&page={{ page_obj.next_page_number }}">next</a>-->
+<!--                <a href="?q={{ query }}&page={{ page_obj.paginator.num_pages }}">last &gt;&gt;</a>-->
+<!--            {% endif %}-->
+<!--        </span>-->
 <!--    </div>-->
-<!--</div>-->
-<!--{% endfor %}-->
+</div>
 
 {% endblock %}
