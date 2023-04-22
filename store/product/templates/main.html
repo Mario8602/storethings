@@ -29,11 +29,11 @@ Products
                 </ul>
             </div>
             {% if category.slug %}
-            <div class="prod-con">
+            <div class="prod-con-filter">
                 ФИЛЬТР
                 <form method="get">
                     {{ filter.form.as_p }}
-                    <input type="submit"/>
+                    <input value="Поиск" type="submit"/>
                 </form>
             </div>
             {% endif %}
