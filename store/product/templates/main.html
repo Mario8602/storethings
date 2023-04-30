@@ -32,7 +32,17 @@ Products
             <div class="prod-con-filter">
                 ФИЛЬТР
                 <form method="get">
-                    {{ filter.form.as_p }}
+
+                    {% for filter in filter.form %}
+                    <div class="mb-3" style="display: inline-block;">
+                        {{ filter.label_tag }}
+                        {{ filter }}
+                        {% if filter.help_text %}
+                        <small class="text-muted">{{ filter.help_text }}</small>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
                     <input value="Поиск" type="submit"/>
                 </form>
             </div>

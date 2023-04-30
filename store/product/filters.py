@@ -32,24 +32,49 @@ class LaptopFilter(django_filters.FilterSet):
         fields = ['color', 'screen_type', 'screen_resolution', 'frequency']
 
 
+class CustomBooleanWidget(forms.Select):
+    def __init__(self, *args, **kwargs):
+        super(CustomBooleanWidget, self).__init__(*args, **kwargs)
+        self.choices = [(None, 'Подсветка клавиш'), (True, 'Да'), (False, 'Нет')] + self.choices
+
+
 class KeyboardFilter(django_filters.FilterSet):
 
-    KEYBOARD_TYPE_CHOICE = (
-        ('', 'Выберите тип клавиатуры'),
-        ('Мембранная', 'Мембранная'),
-        ('Резиновая', 'Резиновая'),
-        ('Механическая', 'Механическая'),
-        ('Оптическая', 'Оптическая'),
+    price__gt = django_filters.NumberFilter(
+        label='',
+        field_name='product__price',
+        lookup_expr='gt',
+        widget=forms.NumberInput(attrs={'class': 'adult-left price_cl', 'value': '0'}),
+        help_text=' ---  ',
+    )
+
+    price__lt = django_filters.NumberFilter(
+        label='',
+        field_name='product__price',
+        lookup_expr='lt',
+        widget=forms.NumberInput(
+            attrs={'class': 'adult-right price_cl', 'style': 'display: inline;', 'value': '99999'}
+        ),
+        help_text='   ---  ',
     )
 
     key_backlight = django_filters.BooleanFilter(
         label='Подсветка клавиш',
-        widget=BooleanWidget(attrs={
-            'class': 'md-textarea form-control lb-form',
+        widget=CustomBooleanWidget(attrs={
+            'class': 'filter-form lb-form'
         }),
     )
+
     keyboard_type = django_filters.ChoiceFilter(
-        choices=KEYBOARD_TYPE_CHOICE,
+        choices=KeyboardDetails.KEYBOARD_TYPE_CHOICE,
+        widget=forms.Select(attrs={
+            'class': 'filter-form lb-form',
+        }),
+        empty_label=None
+    )
+
+    color = django_filters.ChoiceFilter(
+        choices=KeyboardDetails.CHOICE_COLOR,
         widget=forms.Select(attrs={
             'class': 'filter-form lb-form',
         }),
@@ -58,7 +83,12 @@ class KeyboardFilter(django_filters.FilterSet):
 
     class Meta:
         model = KeyboardDetails
-        fields = ['key_backlight', 'keyboard_type']
+        fields = ['key_backlight', 'price__gt', 'price__lt', 'keyboard_type']
+        # fields = {
+        #     'key_backlight': ['exact'],
+        #     'keyboard_type': ['exact'],
+        #     'product__price': ['lt', 'gt'],
+        # }
     #     fields = {
     #         'product__price': ['lt', 'gt'],
     #         'color': ['exact'],
